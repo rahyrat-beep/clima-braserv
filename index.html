@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Pesquisa de Clima Braserv 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#293684; --yellow:#E8AA21; --blue:#3E7AC2; --orange:#F7873B; --lime:#A8B937;
+  --bg:#F3F4F9; --card:#ffffff; --line:#DDE0EE; --text:#50567a; --avatar:#E9EBF5;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Montserrat",system-ui,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.exo{font-family:"Exo 2","Montserrat",sans-serif;color:var(--navy);margin:0}
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+
+/* HERO */
+.hero{background:var(--navy);color:#fff;padding:44px 0 52px}
+.brand{font-family:"Exo 2",sans-serif;font-weight:800;letter-spacing:.14em;font-size:15px;color:#fff;margin-bottom:34px}
+.kicker{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--yellow)}
+.kicker i{width:8px;height:8px;border-radius:50%;background:var(--yellow);display:inline-block}
+.hero h1{color:#fff;font-weight:800;font-size:clamp(34px,6vw,58px);line-height:1.04;margin:14px 0 18px;letter-spacing:-.02em}
+.hero p{max-width:680px;font-size:17px;color:#E6E9F7;margin:0}
+.pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.pill{background:var(--yellow);color:var(--navy);font-weight:700;font-size:12.5px;padding:7px 14px;border-radius:999px}
+
+/* BARRA FIXA */
+.bar{position:sticky;top:0;z-index:20;background:#fff;box-shadow:0 2px 12px rgba(41,54,132,.12)}
+.bar .wrap{display:flex;align-items:center;gap:20px;padding-top:14px;padding-bottom:14px;flex-wrap:wrap}
+.bar-info{flex:1;min-width:230px}
+.bar-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:6px}
+.bar-top b{font-family:"Exo 2",sans-serif;color:var(--navy);font-size:16px}
+.bar-top span{font-size:13px;color:var(--text)}
+.track{height:8px;background:var(--avatar);border-radius:99px;overflow:hidden}
+.fill{height:100%;width:0;background:var(--navy);border-radius:99px;transition:width .25s}
+.bar-actions{display:flex;align-items:center;gap:14px}
+.link{background:none;border:0;color:var(--blue);font:600 13px "Montserrat",sans-serif;cursor:pointer;padding:6px 0;text-decoration:underline}
+.btn-send{background:var(--yellow);color:var(--navy);border:0;border-radius:10px;font:700 15px "Montserrat",sans-serif;padding:13px 24px;cursor:pointer;transition:opacity .15s}
+.btn-send:disabled{opacity:.4;cursor:not-allowed}
+
+/* SEÇÕES */
+section.dim{padding-top:38px;scroll-margin-top:90px}
+.dim-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.dim-head h2{font-size:clamp(24px,3.4vw,32px);font-weight:800}
+.dim-count{margin-left:auto;font-size:13px;font-weight:600;color:var(--text)}
+.info-btn{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--navy);font:italic 700 14px Georgia,serif;cursor:pointer}
+.dim-desc{display:none;margin:10px 0 0;max-width:720px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;font-size:14px}
+.dim-desc.open{display:block}
+.sub{margin:22px 0 10px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--navy)}
+
+/* CARDS */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 22px 18px;display:flex;flex-direction:column;gap:14px;scroll-margin-top:100px;transition:border-color .2s, box-shadow .2s}
+.card.done{border-color:var(--navy)}
+.card.missing{border-color:var(--orange);box-shadow:0 0 0 3px rgba(247,135,59,.28)}
+.card.wide{grid-column:1/-1}
+.chip{align-self:flex-start;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:5px 11px;border-radius:6px}
+.c-navy{background:var(--navy);color:#fff}.c-blue{background:var(--blue);color:#fff}
+.c-orange{background:var(--orange);color:var(--navy)}.c-lime{background:var(--lime);color:var(--navy)}.c-yellow{background:var(--yellow);color:var(--navy)}
+.q{font-family:"Exo 2",sans-serif;font-weight:700;font-size:19px;line-height:1.3;color:var(--navy);margin:0}
+.about{display:flex;align-items:center;gap:12px;border-top:1px dashed var(--line);padding-top:12px}
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--avatar);color:var(--navy);font-weight:700;font-size:12px;display:grid;place-items:center;flex:none}
+.about small{font-size:13px}
+.scale{display:flex;gap:8px;margin-top:auto}
+.scale.n11{flex-wrap:wrap}
+.scale button{flex:1;min-width:0;height:44px;border-radius:10px;border:1.5px solid var(--navy);background:#fff;color:var(--navy);font:700 15px "Montserrat",sans-serif;cursor:pointer;transition:background .12s,color .12s,transform .08s}
+.scale.n11 button{flex:0 0 calc((100% - 80px)/11);min-width:38px}
+.scale button:hover{background:#EEF0FA}
+.scale button:active{transform:scale(.96)}
+.scale button[aria-checked="true"]{background:var(--navy);color:#fff}
+.ends{display:flex;justify-content:space-between;font-size:12px;margin-top:-6px;color:var(--text)}
+textarea,select{width:100%;border:1px solid var(--line);border-radius:12px;background:#fff;padding:13px 15px;font:500 15px "Montserrat",sans-serif;color:var(--navy)}
+textarea{min-height:96px;resize:vertical}
+textarea:focus,select:focus{outline:2px solid var(--blue);outline-offset:1px}
+label.f{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:var(--navy)}
+.opt{font-weight:500;color:var(--text)}
+.perfil{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:760px){.perfil{grid-template-columns:1fr}}
+
+.foot{margin-top:56px;background:var(--navy);color:#fff;padding:26px 0 30px;font-size:14px}
+.foot b{font-family:"Exo 2",sans-serif;letter-spacing:.14em}
+.foot .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.final{padding:34px 0 8px;text-align:center}
+.final p{margin:10px 0 0;font-size:14px}
+.err{display:none;margin-top:14px;background:#fff;border:1.5px solid var(--orange);color:var(--navy);border-radius:12px;padding:12px 16px;font-weight:600;font-size:14px}
+.err.show{display:block}
+
+/* OBRIGADO */
+.thanks{display:none;background:var(--navy);color:#fff;min-height:100vh;padding:60px 0}
+.thanks.show{display:block}
+.thanks h1{color:#fff;font-size:clamp(34px,6vw,56px);font-weight:800;margin:14px 0 16px;line-height:1.05}
+.thanks p{font-size:17px;max-width:640px;color:#E6E9F7}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <header class="hero">
+    <div class="wrap">
+      <div class="brand">BRASERV</div>
+      <div class="kicker"><i></i>Pesquisa de clima 2026</div>
+      <h1>Como é trabalhar<br>na Braserv?</h1>
+      <p>Esta pesquisa ouve você sobre o dia a dia de ser Braserv, à luz dos nossos valores: Honestidade, Excelência Empresarial, Responsabilidade Sustentável e Compromisso com a Vida. Suas respostas orientam as decisões da Gestão Humana e da liderança para construir uma empresa cada vez melhor para trabalhar. Responda pensando nos últimos meses.</p>
+      <div class="pills">
+        <span class="pill">100% anônima</span>
+        <span class="pill">Cerca de 20 minutos</span>
+        <span class="pill">Resultados só para grupos de 3+ pessoas</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="bar" id="bar">
+    <div class="wrap">
+      <div class="bar-info">
+        <div class="bar-top"><b>Seu progresso</b><span id="prog-txt">0 de 0</span></div>
+        <div class="track"><div class="fill" id="fill"></div></div>
+      </div>
+      <div class="bar-actions">
+        <button type="button" class="link" id="next-btn">Ir para a próxima pendente</button>
+        <button type="button" class="btn-send" id="send-btn" disabled>Enviar respostas</button>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap" id="main"></main>
+
+  <div class="wrap final">
+    <button type="button" class="btn-send" id="send-btn2" disabled>Enviar respostas</button>
+    <div class="err" id="err">Não foi possível enviar agora. Verifique sua conexão e tente de novo em instantes. Suas respostas continuam salvas neste aparelho.</div>
+    <p id="final-hint"></p>
+  </div>
+
+  <footer class="foot"><div class="wrap"><b>BRASERV</b><span>Gestão Humana · Pesquisa de clima 2026</span></div></footer>
+</div>
+
+<div class="thanks" id="thanks">
+  <div class="wrap">
+    <div class="brand" style="color:#fff;font-family:'Exo 2',sans-serif;font-weight:800;letter-spacing:.14em">BRASERV</div>
+    <div class="kicker"><i></i>Resposta enviada</div>
+    <h1>Obrigado por participar!</h1>
+    <p>Sua opinião foi registrada de forma anônima. A Gestão Humana vai compartilhar os resultados e os planos de ação com todos.</p>
+  </div>
+</div>
+
+<script>
+/* ============ CONFIGURAÇÃO (edite aqui) ============ */
+const SUPABASE_URL = "https://qiqqzzgshgnadnukqlzk.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_YOb6jU-x0UA9kSvafvLPtQ_sLleeSi7";
+const CONFIG = {
+  formName: "clima-braserv-2026",
+  filiais: ["Alagoas", "Mossoró", "Outra filial"],            /* REVISAR: completar com as filiais/regionais que vão responder */
+  areas: ["Operações", "SGI / SMS", "Contratos", "Contabilidade / Fiscal", "Financeiro", "Gestão Humana", "TI", "Outra área"], /* REVISAR */
+  tempo: ["Até 1 ano", "De 1 a 3 anos", "De 3 a 5 anos", "Mais de 5 anos"],
+  funcao: ["Operacional", "Administrativa", "Liderança"]
+};
+
+/* ============ PERGUNTAS ============ */
+/* l: "g" = sobre o gestor direto | "d" = sobre a direção */
+const DIMS = [
+ {
+  "id": "CRE",
+  "nome": "Credibilidade",
+  "cor": "navy",
+  "info": "Como você enxerga a comunicação, a competência e a integridade do seu gestor direto e da direção da Braserv.",
+  "subs": [
+   {
+    "nome": "Comunicação",
+    "itens": [
+     {
+      "t": "Meu gestor direto me explica o que se espera do meu trabalho e como ele impacta o resultado da Braserv.",
+      "l": "g"
+     },
+     {
+      "t": "Posso fazer perguntas ao meu gestor direto, inclusive sobre temas difíceis, e recebo respostas claras e sinceras.",
+      "l": "g"
+     },
+     {
+      "t": "A direção da Braserv comunica com clareza para onde a empresa está indo e as decisões que afetam as pessoas.",
+      "l": "d"
+     },
+     {
+      "t": "Quando a empresa muda algo importante (contratos, escalas, processos, estrutura), recebo a informação a tempo e entendo o porquê.",
+      "l": "d"
+     }
+    ]
+   },
+   {
+    "nome": "Competência",
+    "itens": [
+     {
+      "t": "Meu gestor direto organiza o trabalho da equipe com planejamento, sem improviso constante.",
+      "l": "g"
+     },
+     {
+      "t": "A direção demonstra competência para conduzir a Braserv em um mercado exigente como o de petróleo e gás.",
+      "l": "d"
+     },
+     {
+      "t": "Tenho confiança de que a Braserv está preparada para crescer com qualidade, sem abrir mão da segurança.",
+      "l": "d"
+     }
+    ]
+   },
+   {
+    "nome": "Integridade",
+    "itens": [
+     {
+      "t": "Meu gestor direto cumpre o que promete.",
+      "l": "g"
+     },
+     {
+      "t": "Meu gestor direto age com honestidade, mesmo quando isso é mais difícil ou mais caro.",
+      "l": "g"
+     },
+     {
+      "t": "A direção da Braserv cumpre o que promete às pessoas.",
+      "l": "d"
+     },
+     {
+      "t": "As decisões importantes da direção são tomadas de forma ética e transparente, em linha com o código de ética da Braserv.",
+      "l": "d"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "RES",
+  "nome": "Respeito",
+  "cor": "blue",
+  "info": "Como a Braserv apoia seu desenvolvimento, ouve você e cuida das pessoas, em campo e na base.",
+  "subs": [
+   {
+    "nome": "Suporte profissional",
+    "itens": [
+     {
+      "t": "Recebo os treinamentos e recursos de que preciso para fazer meu trabalho com segurança e qualidade."
+     },
+     {
+      "t": "Sou reconhecido(a) quando faço um bom trabalho, e não apenas cobrado quando algo dá errado."
+     },
+     {
+      "t": "Meu gestor direto se interessa pelas minhas ideias e pela minha evolução na carreira.",
+      "l": "g"
+     },
+     {
+      "t": "Enxergo na Braserv oportunidades reais de crescer profissionalmente."
+     }
+    ]
+   },
+   {
+    "nome": "Colaboração",
+    "itens": [
+     {
+      "t": "Minha opinião é ouvida antes das decisões que afetam o meu trabalho."
+     },
+     {
+      "t": "As áreas da Braserv (operação, contratos, financeiro, GH, SMS e demais) trabalham de forma integrada para entregar resultado ao cliente."
+     },
+     {
+      "t": "As equipes de campo e de base se respeitam e se apoiam mutuamente."
+     }
+    ]
+   },
+   {
+    "nome": "Cuidado",
+    "itens": [
+     {
+      "t": "Consigo equilibrar minha vida pessoal e profissional, com escalas, folgas e descansos respeitados."
+     },
+     {
+      "t": "As condições físicas do meu local de trabalho (base, escritório ou campo) são adequadas."
+     },
+     {
+      "t": "Sinto que a Braserv se importa comigo como pessoa, e não só com o resultado que eu entrego."
+     },
+     {
+      "t": "Em momentos difíceis (saúde, família, imprevistos), sinto que posso contar com o apoio da empresa."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "IMP",
+  "nome": "Imparcialidade",
+  "cor": "orange",
+  "info": "Se você sente que há justiça nas oportunidades, na remuneração, nas avaliações e nas regras.",
+  "subs": [
+   {
+    "nome": "Equidade",
+    "itens": [
+     {
+      "t": "Sou tratado(a) com justiça, independentemente de cargo, gênero, idade, raça, filial ou tempo de empresa."
+     },
+     {
+      "t": "As oportunidades de crescimento e de treinamento chegam de forma justa para o campo e para o administrativo, em todas as filiais."
+     },
+     {
+      "t": "Minha remuneração e meus benefícios são justos em comparação com colegas em funções parecidas."
+     }
+    ]
+   },
+   {
+    "nome": "Imparcialidade",
+    "itens": [
+     {
+      "t": "As promoções e movimentações na Braserv acontecem por mérito e competência."
+     },
+     {
+      "t": "Meu gestor direto trata toda a equipe com imparcialidade, sem preferidos.",
+      "l": "g"
+     },
+     {
+      "t": "A avaliação do meu desempenho é justa e baseada em critérios que eu conheço."
+     }
+    ]
+   },
+   {
+    "nome": "Justiça",
+    "itens": [
+     {
+      "t": "Tenho um canal confiável para relatar tratamento injusto, assédio ou desvio de conduta, e confio que será tratado com seriedade."
+     },
+     {
+      "t": "Quando acontece um erro ou incidente, a apuração busca entender as causas, e não apenas apontar culpados."
+     },
+     {
+      "t": "As regras da Braserv valem igualmente para todos, inclusive para a liderança."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "ORG",
+  "nome": "Orgulho",
+  "cor": "lime",
+  "info": "O orgulho que você sente do seu trabalho, da sua equipe e de ser Braserv.",
+  "subs": [
+   {
+    "nome": "Trabalho pessoal",
+    "itens": [
+     {
+      "t": "Meu trabalho tem um significado especial para mim."
+     },
+     {
+      "t": "Sinto que meu trabalho faz diferença para o resultado e para a segurança da operação."
+     }
+    ]
+   },
+   {
+    "nome": "Equipe",
+    "itens": [
+     {
+      "t": "Sinto orgulho do que a minha equipe entrega."
+     },
+     {
+      "t": "Minha equipe cuida da qualidade e da segurança do que entrega, mesmo sob pressão de prazo."
+     }
+    ]
+   },
+   {
+    "nome": "Empresa",
+    "itens": [
+     {
+      "t": "Tenho orgulho de dizer que trabalho na Braserv."
+     },
+     {
+      "t": "Acredito que a Braserv contribui de forma positiva para os clientes, para o setor e para a sociedade."
+     },
+     {
+      "t": "A Braserv tem boa reputação junto aos clientes e às comunidades onde atua."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "CAM",
+  "nome": "Camaradagem",
+  "cor": "yellow",
+  "info": "O quanto você se sente à vontade, bem recebido(a) e parte de um time.",
+  "subs": [
+   {
+    "nome": "Intimidade",
+    "itens": [
+     {
+      "t": "Posso ser eu mesmo(a) no trabalho, sem precisar esconder quem sou."
+     },
+     {
+      "t": "Tenho relações de confiança com as pessoas do meu time."
+     }
+    ]
+   },
+   {
+    "nome": "Hospitalidade",
+    "itens": [
+     {
+      "t": "Quem chega à Braserv é bem recebido(a) e integrado(a) à equipe, desde a admissão."
+     },
+     {
+      "t": "Sinto-me bem-vindo(a) e à vontade na minha base, escritório ou local de operação."
+     }
+    ]
+   },
+   {
+    "nome": "Comunidade",
+    "itens": [
+     {
+      "t": "Existe espírito de equipe entre as pessoas com quem trabalho, inclusive entre turnos e filiais."
+     },
+     {
+      "t": "Comemoramos as conquistas juntos."
+     },
+     {
+      "t": "Sinto que faço parte de um time e de algo maior: ser Braserv."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "VAL",
+  "nome": "Valores Braserv",
+  "cor": "navy",
+  "info": "Como você percebe, no dia a dia, os quatro valores da Braserv: Honestidade, Excelência Empresarial, Responsabilidade Sustentável e Compromisso com a Vida.",
+  "subs": [
+   {
+    "nome": "Honestidade",
+    "cor": "blue",
+    "itens": [
+     {
+      "t": "Na Braserv, as pessoas falam a verdade, mesmo quando ela é desconfortável."
+     },
+     {
+      "t": "Vejo as pessoas assumindo seus erros em vez de escondê-los."
+     },
+     {
+      "t": "Posso relatar um desvio de conduta, de ética ou de segurança sem medo de retaliação."
+     },
+     {
+      "t": "A Braserv age com integridade nas relações com clientes e fornecedores, sem \"jeitinho\"."
+     }
+    ]
+   },
+   {
+    "nome": "Excelência Empresarial",
+    "cor": "orange",
+    "itens": [
+     {
+      "t": "A Braserv busca melhorar continuamente seus processos e resultados."
+     },
+     {
+      "t": "Sou incentivado(a) a buscar excelência técnica e a entregar com qualidade no meu trabalho."
+     },
+     {
+      "t": "Tenho os procedimentos, as ferramentas e o suporte necessários para entregar com qualidade."
+     },
+     {
+      "t": "Na Braserv, buscar excelência e tratar bem as pessoas andam juntos."
+     }
+    ]
+   },
+   {
+    "nome": "Responsabilidade Sustentável",
+    "cor": "lime",
+    "itens": [
+     {
+      "t": "Percebo ações concretas da Braserv para reduzir impactos ao meio ambiente."
+     },
+     {
+      "t": "A Braserv considera o impacto de suas decisões nas comunidades onde atua."
+     },
+     {
+      "t": "Na minha área, cuidamos do descarte correto de resíduos e do uso consciente de recursos."
+     },
+     {
+      "t": "Acredito que a Braserv é uma empresa sólida, que vai continuar gerando oportunidades daqui a muitos anos."
+     }
+    ]
+   },
+   {
+    "nome": "Compromisso com a Vida",
+    "cor": "yellow",
+    "itens": [
+     {
+      "t": "A direção demonstra, com decisões concretas, que segurança e saúde vêm antes de prazo e resultado.",
+      "l": "d"
+     },
+     {
+      "t": "Meu gestor direto dá o exemplo no cumprimento das Regras que Salvam Vidas.",
+      "l": "g"
+     },
+     {
+      "t": "As Regras que Salvam Vidas são conhecidas e praticadas por todos na minha área."
+     },
+     {
+      "t": "Posso interromper uma atividade quando percebo risco, e sei que serei apoiado(a) pela liderança."
+     },
+     {
+      "t": "Sinto que a Braserv cuida da minha saúde física e emocional."
+     }
+    ]
+   }
+  ]
+ }
+];
+const ABERTAS = [
+ "O que mais te orgulha de fazer parte da Braserv?",
+ "Se você pudesse mudar uma coisa para a Braserv ser um lugar ainda melhor para trabalhar, o que seria?",
+ "Conte uma situação recente em que você viu (ou sentiu falta de) um dos valores da Braserv no dia a dia: Honestidade, Excelência Empresarial, Responsabilidade Sustentável ou Compromisso com a Vida."
+];
+const ENPS_Q = "Em uma escala de 0 a 10, o quanto você recomendaria a Braserv como um bom lugar para trabalhar a um amigo ou familiar?";
+const GERAL_Q = "No geral, considerando tudo, a Braserv é um excelente lugar para trabalhar.";
+const LABELS = {1:"Discordo totalmente",2:"Discordo",3:"Discordo um pouco",4:"Concordo um pouco",5:"Concordo",6:"Concordo totalmente"};
+
+/* ============ ESTADO ============ */
+const KEY = "braserv-clima-2026-rascunho";
+let S = { a:{}, p:{}, o:{} };
+try { const raw = localStorage.getItem(KEY); if (raw) S = Object.assign(S, JSON.parse(raw)); } catch(e){}
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){} }
+
+const ALL_IDS = [];        /* ids de todas as perguntas obrigatórias, na ordem */
+const META = {};           /* id -> {dim, sub, l} para análise depois */
+const $ = (s,r=document)=>r.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function scaleHTML(id, n){
+  const vals = n===11 ? [0,1,2,3,4,5,6,7,8,9,10] : [1,2,3,4,5,6];
+  return `<div class="scale ${n===11?'n11':''}" role="radiogroup" aria-label="Sua resposta">` +
+    vals.map(v=>`<button type="button" role="radio" aria-checked="${S.a[id]===v}" data-id="${id}" data-v="${v}" ${n===6?`title="${LABELS[v]}"`:''}>${v}</button>`).join("") +
+    `</div><div class="ends"><span>${n===11?'Nada provável':LABELS[1]}</span><span>${n===11?'Muito provável':LABELS[6]}</span></div>`;
+}
+function cardHTML(id, texto, chipTxt, chipCor, l, n){
+  ALL_IDS.push(id);
+  const about = l ? `<div class="about"><div class="avatar">${l==='g'?'GD':'DR'}</div><small>${l==='g'?'Sobre o seu <b>gestor direto</b>':'Sobre a <b>direção da Braserv</b>'}</small></div>` : "";
+  return `<article class="card ${n===11?'wide':''}" id="c-${id}" data-id="${id}">
+    <span class="chip c-${chipCor}">${esc(chipTxt)}</span>
+    <h3 class="q">${esc(texto)}</h3>${about}${scaleHTML(id,n)}</article>`;
+}
+
+function build(){
+  let h = "";
+  /* Perfil */
+  const opts = arr => `<option value="">Selecione</option>` + arr.map(x=>`<option>${esc(x)}</option>`).join("");
+  h += `<section class="dim" id="s-perfil"><div class="dim-head"><h2>Sobre você</h2></div>
+    <p style="margin:8px 0 18px;max-width:720px">Usamos estas informações só para separar os resultados por grupo. Nada aqui identifica você, e os resultados só aparecem para grupos com 3 ou mais respostas.</p>
+    <div class="card"><div class="perfil">
+      <label class="f">Filial / regional *<select id="p-filial">${opts(CONFIG.filiais)}</select></label>
+      <label class="f">Área *<select id="p-area">${opts(CONFIG.areas)}</select></label>
+      <label class="f"><span>Tempo de empresa <span class="opt">(opcional)</span></span><select id="p-tempo">${opts(CONFIG.tempo)}</select></label>
+      <label class="f"><span>Tipo de função <span class="opt">(opcional)</span></span><select id="p-funcao">${opts(CONFIG.funcao)}</select></label>
+    </div></div></section>`;
+
+  /* Escala */
+  h += `<section class="dim"><div class="card" style="gap:6px"><span class="chip c-navy">Como responder</span>
+    <p style="margin:6px 0 0">Para cada frase, escolha de <b>1 (discordo totalmente)</b> a <b>6 (concordo totalmente)</b>. Não existe resposta certa ou errada: queremos a sua percepção.</p></div></section>`;
+
+  DIMS.forEach(d=>{
+    let n = 0; d.subs.forEach(s=>n+=s.itens.length);
+    h += `<section class="dim" id="s-${d.id}"><div class="dim-head"><h2>${esc(d.nome)}</h2>
+      <button type="button" class="info-btn" data-info="${d.id}" aria-label="O que é ${esc(d.nome)}">i</button>
+      <span class="dim-count" id="cnt-${d.id}">0/${n}</span></div>
+      <div class="dim-desc" id="info-${d.id}">${esc(d.info)}</div>`;
+    let k = 0;
+    d.subs.forEach(s=>{
+      h += `<div class="grid" style="margin-top:18px">`;
+      s.itens.forEach(it=>{
+        k++; const id = `${d.id}-${String(k).padStart(2,"0")}`;
+        META[id] = {dim:d.nome, sub:s.nome, lider: it.l==="g"?"gestor direto":it.l==="d"?"direção":""};
+        h += cardHTML(id, it.t, s.nome, s.cor || d.cor, it.l, 6);
+      });
+      h += `</div>`;
+    });
+    h += `</section>`;
+  });
+
+  /* Indicadores */
+  META.enps = {dim:"Indicadores", sub:"eNPS", lider:""}; META.geral = {dim:"Indicadores", sub:"Satisfação geral", lider:""};
+  h += `<section class="dim" id="s-IND"><div class="dim-head"><h2>Para fechar</h2><span class="dim-count" id="cnt-IND">0/2</span></div>
+    <div class="grid" style="margin-top:16px">
+    ${cardHTML("enps", ENPS_Q, "Recomendação", "navy", "", 11)}
+    ${cardHTML("geral", GERAL_Q, "Visão geral", "yellow", "", 6)}
+    </div></section>`;
+
+  /* Abertas */
+  h += `<section class="dim" id="s-ABE"><div class="dim-head"><h2>Com suas palavras</h2></div>
+    <p style="margin:8px 0 16px;max-width:720px">Opcional, mas muito valioso. Evite citar nomes de pessoas.</p><div class="grid">` +
+    ABERTAS.map((q,i)=>`<article class="card ${i===2?'wide':''}"><span class="chip c-blue">Pergunta aberta ${i+1}</span>
+      <h3 class="q">${esc(q)}</h3><textarea data-open="${i+1}" placeholder="Escreva aqui (opcional)">${esc(S.o[i+1]||"")}</textarea></article>`).join("") +
+    `</div></section>`;
+
+  $("#main").innerHTML = h;
+  ["filial","area","tempo","funcao"].forEach(k=>{ const el=$("#p-"+k); if (S.p[k]) el.value=S.p[k]; });
+}
+
+/* ============ ATUALIZAÇÃO DA TELA ============ */
+function refresh(){
+  const total = ALL_IDS.length;
+  const done = ALL_IDS.filter(id=>S.a[id]!==undefined).length;
+  $("#prog-txt").textContent = `${done} de ${total}`;
+  $("#fill").style.width = (done/total*100)+"%";
+  ALL_IDS.forEach(id=>{
+    const c = $("#c-"+id); const ok = S.a[id]!==undefined;
+    c.classList.toggle("done", ok); if (ok) c.classList.remove("missing");
+    c.querySelectorAll(".scale button").forEach(b=>b.setAttribute("aria-checked", String(S.a[id]===+b.dataset.v)));
+  });
+  DIMS.forEach(d=>{
+    const ids = ALL_IDS.filter(i=>i.startsWith(d.id+"-"));
+    $("#cnt-"+d.id).textContent = `${ids.filter(i=>S.a[i]!==undefined).length}/${ids.length}`;
+  });
+  $("#cnt-IND").textContent = `${["enps","geral"].filter(i=>S.a[i]!==undefined).length}/2`;
+  const perfilOk = !!(S.p.filial && S.p.area);
+  const ready = done===total && perfilOk;
+  $("#send-btn").disabled = $("#send-btn2").disabled = !ready;
+  const faltam = total-done;
+  $("#final-hint").textContent = ready ? "Tudo respondido. É só enviar." :
+    `${faltam>0?`Faltam ${faltam} pergunta${faltam>1?'s':''}`:''}${faltam>0&&!perfilOk?' e ':''}${!perfilOk?(faltam>0?'o perfil (filial e área)':'Falta preencher filial e área'):''}.`;
+}
+function firstPending(){
+  if (!(S.p.filial && S.p.area)) return $("#s-perfil");
+  const id = ALL_IDS.find(i=>S.a[i]===undefined);
+  return id ? $("#c-"+id) : null;
+}
+function goPending(){
+  const el = firstPending(); if (!el) return;
+  el.scrollIntoView({behavior:"smooth", block:"center"});
+  if (el.classList.contains("card")){ el.classList.add("missing"); }
+}
+
+/* ============ EVENTOS ============ */
+document.addEventListener("click", e=>{
+  const b = e.target.closest(".scale button");
+  if (b){ S.a[b.dataset.id] = +b.dataset.v; save(); refresh(); return; }
+  const i = e.target.closest("[data-info]");
+  if (i){ $("#info-"+i.dataset.info).classList.toggle("open"); }
+});
+document.addEventListener("change", e=>{
+  const m = {"p-filial":"filial","p-area":"area","p-tempo":"tempo","p-funcao":"funcao"}[e.target.id];
+  if (m){ S.p[m] = e.target.value; save(); refresh(); }
+});
+document.addEventListener("input", e=>{
+  if (e.target.dataset && e.target.dataset.open){ S.o[e.target.dataset.open] = e.target.value; save(); }
+});
+$("#next-btn").addEventListener("click", goPending);
+
+function enviar(){
+  const btns=[$("#send-btn"),$("#send-btn2")]; btns.forEach(b=>{b.disabled=true;b.textContent="Enviando…"});
+  $("#err").classList.remove("show");
+  const linha = {
+    filial:S.p.filial||"", area:S.p.area||"", tempo:S.p.tempo||null, funcao:S.p.funcao||null,
+    enps:S.a.enps, geral:S.a.geral,
+    itens: ALL_IDS.filter(id=>id!=="enps"&&id!=="geral").map(id=>({id, v:S.a[id]})),
+    abertas: [1,2,3].map(n=>({n, a:(S.o[n]||"").slice(0,4000)})).filter(x=>x.a.trim())
+  };
+  let tentativa = 0;
+  function sucesso(){
+    try { localStorage.removeItem(KEY); } catch(e){}
+    $("#app").style.display="none"; $("#thanks").classList.add("show"); window.scrollTo(0,0);
+  }
+  function falha(){
+    if (tentativa < 3){ setTimeout(tentar, 1500*tentativa + Math.random()*2000); return; }
+    $("#err").classList.add("show");
+    btns.forEach(b=>{b.textContent="Enviar respostas"}); refresh();
+  }
+  async function tentar(){
+    tentativa++;
+    try{
+      const h={"Content-Type":"application/json","apikey":SUPABASE_ANON_KEY,"Prefer":"return=minimal"};
+      if(SUPABASE_ANON_KEY.startsWith("eyJ")) h["Authorization"]="Bearer "+SUPABASE_ANON_KEY; /* chave antiga (JWT) */
+      const r = await fetch(SUPABASE_URL + "/rest/v1/respostas", {method:"POST", headers:h, body: JSON.stringify(linha)});
+      r.ok ? sucesso() : falha();
+    }catch(e){ falha(); }
+  }
+  tentar();
+}
+$("#send-btn").addEventListener("click", enviar);
+$("#send-btn2").addEventListener("click", enviar);
+
+build(); refresh();
+</script>
+</body>
+</html>

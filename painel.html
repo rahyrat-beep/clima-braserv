@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Painel Clima Braserv 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#293684;--yellow:#E8AA21;--blue:#3E7AC2;--orange:#F7873B;--lime:#A8B937;--bg:#F3F4F9;--card:#fff;--line:#DDE0EE;--text:#50567a;--avatar:#E9EBF5}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:14.5px/1.5 "Montserrat",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.exo{font-family:"Exo 2","Montserrat",sans-serif;color:var(--navy);margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+[hidden]{display:none!important}
+button{font-family:inherit}
+
+/* login */
+#login{min-height:100vh;background:var(--navy);display:grid;place-items:center;padding:20px}
+.lbox{background:#fff;border-radius:18px;padding:32px;width:min(420px,100%)}
+.brand{font:800 14px "Exo 2",sans-serif;letter-spacing:.14em;color:var(--navy)}
+.lbox h1{font-size:28px;margin:10px 0 6px}
+.lbox p{margin:0 0 18px}
+label.f{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:14px}
+input,select{width:100%;border:1px solid var(--line);border-radius:10px;background:#fff;padding:12px 14px;font:500 14.5px "Montserrat",sans-serif;color:var(--navy)}
+input:focus,select:focus{outline:2px solid var(--blue);outline-offset:1px}
+.btn{background:var(--yellow);color:var(--navy);border:0;border-radius:10px;font:700 14.5px "Montserrat",sans-serif;padding:12px 22px;cursor:pointer}
+.btn.sec{background:#fff;border:1.5px solid var(--navy)}
+.btn:disabled{opacity:.5;cursor:wait}
+.msg{margin-top:12px;font-weight:600;color:#b4531a}
+
+/* topo */
+.top{background:var(--navy);color:#fff;padding:22px 0}
+.top .wrap{display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:space-between}
+.top h1{color:#fff;font-size:26px;font-weight:800}
+.top small{color:#cfd4ee;font-size:12.5px}
+.acts{display:flex;gap:10px;flex-wrap:wrap}
+.top .btn.sec{background:transparent;color:#fff;border-color:#8993cf}
+
+.filtros{position:sticky;top:0;z-index:10;background:#fff;box-shadow:0 2px 12px rgba(41,54,132,.12)}
+.filtros .wrap{display:grid;grid-template-columns:repeat(4,1fr) auto;gap:12px;padding-top:12px;padding-bottom:12px;align-items:end}
+.filtros label{display:flex;flex-direction:column;gap:4px;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--navy)}
+.filtros select{padding:9px 12px}
+@media(max-width:860px){.filtros .wrap{grid-template-columns:1fr 1fr}}
+
+main{padding:26px 0 60px}
+section{margin-top:30px}
+section>h2{font-size:22px;font-weight:800;margin-bottom:4px}
+.sub{margin:0 0 14px;max-width:760px}
+.grid{display:grid;gap:16px}
+.g4{grid-template-columns:repeat(4,1fr)}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:900px){.g4{grid-template-columns:1fr 1fr}.g2,.g3{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+.kpi .rot{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.kpi .val{font:800 38px/1.1 "Exo 2",sans-serif;color:var(--navy);margin:8px 0 2px}
+.kpi small{display:block}
+.aviso{background:#fff;border:1.5px solid var(--orange);border-radius:14px;padding:18px 20px;color:var(--navy);font-weight:600}
+
+.chip{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:var(--navy);color:#fff}
+.row{display:grid;grid-template-columns:170px 1fr 128px;gap:12px;align-items:center;margin:9px 0}
+.row.s{grid-template-columns:150px 1fr 128px;margin:6px 0 6px 14px;font-size:13px}
+@media(max-width:560px){.row,.row.s{grid-template-columns:1fr;gap:4px}}
+.row .nm{font-weight:600;color:var(--navy)}
+.trk{height:12px;background:var(--avatar);border-radius:99px;overflow:hidden}
+.fil{height:100%;border-radius:99px}
+.row .vl{white-space:nowrap;text-align:right;font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums}
+.row .vl span{font-weight:500;color:var(--text);font-size:12px;margin-left:4px}
+.leg{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;margin-top:12px}
+.leg i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+
+.nps{display:flex;height:26px;border-radius:8px;overflow:hidden;margin:10px 0 8px}
+.nps div{display:grid;place-items:center;color:#fff;font-size:12px;font-weight:700}
+
+table.hm{border-collapse:separate;border-spacing:4px;width:100%;font-size:13px}
+.hm th{font-weight:700;color:var(--navy);text-align:center;padding:6px 4px;font-size:12px}
+.hm th:first-child,.hm td:first-child{text-align:left;white-space:nowrap;padding-right:10px;font-weight:600;color:var(--navy)}
+.hm td{text-align:center;border-radius:8px;padding:11px 4px;font-weight:700;font-variant-numeric:tabular-nums}
+.scroll{overflow-x:auto}
+
+ol.it{margin:0;padding:0;list-style:none}
+ol.it li{display:grid;grid-template-columns:54px 1fr;gap:12px;align-items:start;padding:11px 0;border-top:1px dashed var(--line)}
+ol.it li:first-child{border-top:0}
+.pct{font:800 17px "Exo 2",sans-serif;text-align:center;border-radius:8px;padding:6px 0}
+.it small{color:var(--text);display:block;margin-top:2px}
+.cm{padding:12px 0;border-top:1px dashed var(--line);color:var(--navy)}
+.cm:first-of-type{border-top:0}
+.pill{font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--avatar);color:var(--navy)}
+.foot{color:var(--text);font-size:12.5px;margin-top:28px}
+
+.int{margin:10px 0 0;font-size:12.5px;line-height:1.45;color:var(--text)}
+.leit{margin-top:14px;padding:12px 14px;border-radius:10px;background:#F3F4F9;border-left:4px solid var(--navy);font-size:13px;line-height:1.55;color:var(--navy)}
+.leit.atencao{border-left-color:var(--yellow);background:#FDF6E3}
+.leit.prioridade{border-left-color:var(--orange);background:#FEF0E6}
+.rd{display:block;margin-top:5px;color:var(--navy);font-size:12.5px;line-height:1.45}
+.estr{border:1.5px solid var(--navy)}
+.estr ul{margin:10px 0 0;padding-left:18px}.estr li{margin:9px 0;color:var(--navy);line-height:1.5}
+.estr li.alerta{background:#FEF0E6;border-radius:8px;padding:8px 10px;margin-left:-10px;list-style-position:inside}
+.okr{border-top:4px solid var(--navy)}.okr.pres{border-top-color:var(--lime)}
+.okr h3{font-size:16px;margin:8px 0}.okr p{margin:6px 0;font-size:13px;color:var(--navy)}
+#mais summary{cursor:pointer;font:800 17px "Exo 2",sans-serif;color:var(--navy)}
+#mais p,#mais li{font-size:13px;line-height:1.55}
+
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 22px;border-bottom:2px solid var(--line)}
+.tabs button{background:none;border:0;border-bottom:3px solid transparent;margin-bottom:-2px;padding:12px 16px;font:700 14px "Montserrat",sans-serif;color:var(--text);cursor:pointer}
+.tabs button.on{color:var(--navy);border-bottom-color:var(--yellow)}
+.tab{display:none}.tab.on{display:block}
+.tab>section:first-child{margin-top:0}
+.dn{display:flex;flex-direction:column;align-items:center;gap:4px}.dn svg{width:132px;height:132px}.dn small{font-weight:600;color:var(--navy);text-align:center}
+.radar svg{width:100%;max-width:640px;height:auto;display:block;margin:0 auto}
+.lg2{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;font-size:12px;margin-top:6px}.lg2 i{display:inline-block;width:12px;height:3px;margin-right:6px;vertical-align:middle}
+.dist{display:flex;height:22px;border-radius:6px;overflow:hidden}.dist div{display:grid;place-items:center;font-size:11px;font-weight:700;color:#fff;min-width:0;overflow:hidden}
+.drow{display:grid;grid-template-columns:170px 1fr;gap:12px;align-items:center;margin:10px 0}
+@media(max-width:560px){.drow{grid-template-columns:1fr;gap:4px}}
+.seg{display:inline-flex;border:1.5px solid var(--navy);border-radius:10px;overflow:hidden;margin-bottom:16px}
+.seg button{background:#fff;border:0;padding:9px 18px;font:700 13.5px "Montserrat",sans-serif;color:var(--navy);cursor:pointer}.seg button.on{background:var(--navy);color:#fff}
+.call{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
+@media(max-width:800px){.call{grid-template-columns:1fr}}
+.call .card b.big{display:block;font:800 22px "Exo 2",sans-serif;color:var(--navy);margin:6px 0 2px}
+table.sc{border-collapse:separate;border-spacing:0 4px;width:100%;font-size:13px;min-width:760px}
+.sc th{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--navy);padding:6px 8px;text-align:center}
+.sc th:first-child,.sc td:first-child{text-align:left}
+.sc td{padding:10px 8px;text-align:center;background:#F7F8FC;font-variant-numeric:tabular-nums}
+.sc td:first-child{font-weight:700;color:var(--navy);border-radius:10px 0 0 10px}.sc td:last-child{border-radius:0 10px 10px 0}
+.sc td.h{font-weight:700}
+.sc tr.un{cursor:pointer}.sc tr.un:hover td{outline:0;box-shadow:inset 0 0 0 100px rgba(41,54,132,.05)}
+body.pres .top,body.pres .filtros{display:none}
+body.pres{font-size:17px}body.pres .kpi .val{font-size:46px}body.pres main{padding-top:20px}
+#sairpres{display:none;position:fixed;right:14px;bottom:14px;z-index:50}body.pres #sairpres{display:block}
+body.embed .top{display:none}
+body.embed main{padding-top:14px}
+body.embed #login{min-height:100vh}
+@media print{.filtros,.acts,#mais,.tabs,#sairpres{display:none!important}.tab{display:block!important;margin-bottom:24px}.top{background:#fff;color:var(--navy)}.top h1{color:var(--navy)}body{background:#fff}.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+
+<div id="login">
+  <form class="lbox" id="lform">
+    <div class="brand">BRASERV</div>
+    <h1>Painel de Clima</h1>
+    <p>Acesso restrito à Gestão Humana.</p>
+    <label class="f">E-mail<input id="em" type="email" autocomplete="username" required></label>
+    <label class="f">Senha<input id="pw" type="password" autocomplete="current-password" required></label>
+    <button class="btn" id="lbtn" type="submit">Entrar</button>
+    <div class="msg" id="lmsg"></div>
+  </form>
+</div>
+
+<div id="app" hidden>
+  <header class="top"><div class="wrap">
+    <div><div class="brand" style="color:#fff">BRASERV · PORTAL GH</div><h1>Clima Organizacional 2026</h1><small id="atual"></small></div>
+    <div class="acts">
+      <button class="btn sec" id="b-atual">Atualizar</button>
+      <button class="btn sec" id="b-portal">Exportar para o Portal GH</button>
+      <button class="btn sec" id="b-resumo">Exportar resumo (CSV)</button>
+      <button class="btn sec" id="b-bruto">Exportar respostas (CSV)</button>
+      <button class="btn" id="b-apres">Modo apresentação</button>
+      <button class="btn sec" id="b-print">Imprimir / PDF</button>
+      <button class="btn sec" id="b-sair">Sair</button>
+    </div>
+  </div></header>
+
+  <div class="filtros"><div class="wrap">
+    <label>Filial / regional<select id="f-filial"></select></label>
+    <label>Área<select id="f-area"></select></label>
+    <label>Tempo de empresa<select id="f-tempo"></select></label>
+    <label>Tipo de função<select id="f-funcao"></select></label>
+    <button class="btn sec" id="f-limpar">Limpar</button>
+  </div></div>
+
+  <main><div class="wrap" id="conteudo"></div></main>
+  <button class="btn sec" id="sairpres" style="background:#fff">Sair da apresentação (Esc)</button>
+</div>
+
+<script>
+/* ===== CONFIGURAÇÃO (cole os dados do seu projeto Supabase) ===== */
+const SUPABASE_URL = "https://qiqqzzgshgnadnukqlzk.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_YOb6jU-x0UA9kSvafvLPtQ_sLleeSi7";
+const HEADCOUNT = {};              /* opcional: colaboradores por filial ou área, ex.: {"Alagoas":120,"Operações":300}. Habilita a adesão por unidade */
+const TOTAL_COLABORADORES = 600;   /* base para calcular a adesão */
+const MIN_GRUPO = 3;               /* abaixo disso, o resultado do grupo fica oculto */
+const CICLO = "2026";              /* identifica o ciclo da pesquisa nas exportações */
+
+/* ===== Perguntas (geradas a partir do site) ===== */
+const Q = {"CRE-01":{"dim":"Credibilidade","sub":"Comunicação","l":"g","t":"Meu gestor direto me explica o que se espera do meu trabalho e como ele impacta o resultado da Braserv.","f":"clareza de expectativas e da ligação com o resultado"},"CRE-02":{"dim":"Credibilidade","sub":"Comunicação","l":"g","t":"Posso fazer perguntas ao meu gestor direto, inclusive sobre temas difíceis, e recebo respostas claras e sinceras.","f":"abertura e franqueza do gestor direto"},"CRE-03":{"dim":"Credibilidade","sub":"Comunicação","l":"d","t":"A direção da Braserv comunica com clareza para onde a empresa está indo e as decisões que afetam as pessoas.","f":"transparência da direção sobre rumos e decisões"},"CRE-04":{"dim":"Credibilidade","sub":"Comunicação","l":"d","t":"Quando a empresa muda algo importante (contratos, escalas, processos, estrutura), recebo a informação a tempo e entendo o porquê.","f":"comunicação das mudanças em tempo hábil"},"CRE-05":{"dim":"Credibilidade","sub":"Competência","l":"g","t":"Meu gestor direto organiza o trabalho da equipe com planejamento, sem improviso constante.","f":"planejamento e organização do gestor direto"},"CRE-06":{"dim":"Credibilidade","sub":"Competência","l":"d","t":"A direção demonstra competência para conduzir a Braserv em um mercado exigente como o de petróleo e gás.","f":"confiança na capacidade da direção"},"CRE-07":{"dim":"Credibilidade","sub":"Competência","l":"d","t":"Tenho confiança de que a Braserv está preparada para crescer com qualidade, sem abrir mão da segurança.","f":"preparo da empresa para crescer com segurança"},"CRE-08":{"dim":"Credibilidade","sub":"Integridade","l":"g","t":"Meu gestor direto cumpre o que promete.","f":"coerência entre fala e ação do gestor direto"},"CRE-09":{"dim":"Credibilidade","sub":"Integridade","l":"g","t":"Meu gestor direto age com honestidade, mesmo quando isso é mais difícil ou mais caro.","f":"honestidade do gestor direto sob pressão"},"CRE-10":{"dim":"Credibilidade","sub":"Integridade","l":"d","t":"A direção da Braserv cumpre o que promete às pessoas.","f":"cumprimento das promessas da direção"},"CRE-11":{"dim":"Credibilidade","sub":"Integridade","l":"d","t":"As decisões importantes da direção são tomadas de forma ética e transparente, em linha com o código de ética da Braserv.","f":"ética e transparência nas decisões da direção"},"RES-01":{"dim":"Respeito","sub":"Suporte profissional","l":"","t":"Recebo os treinamentos e recursos de que preciso para fazer meu trabalho com segurança e qualidade.","f":"treinamento e recursos para trabalhar com segurança e qualidade"},"RES-02":{"dim":"Respeito","sub":"Suporte profissional","l":"","t":"Sou reconhecido(a) quando faço um bom trabalho, e não apenas cobrado quando algo dá errado.","f":"reconhecimento pelo bom trabalho"},"RES-03":{"dim":"Respeito","sub":"Suporte profissional","l":"g","t":"Meu gestor direto se interessa pelas minhas ideias e pela minha evolução na carreira.","f":"interesse do gestor direto por ideias e carreira"},"RES-04":{"dim":"Respeito","sub":"Suporte profissional","l":"","t":"Enxergo na Braserv oportunidades reais de crescer profissionalmente.","f":"perspectiva real de crescimento"},"RES-05":{"dim":"Respeito","sub":"Colaboração","l":"","t":"Minha opinião é ouvida antes das decisões que afetam o meu trabalho.","f":"escuta antes das decisões"},"RES-06":{"dim":"Respeito","sub":"Colaboração","l":"","t":"As áreas da Braserv (operação, contratos, financeiro, GH, SMS e demais) trabalham de forma integrada para entregar resultado ao cliente.","f":"integração entre as áreas"},"RES-07":{"dim":"Respeito","sub":"Colaboração","l":"","t":"As equipes de campo e de base se respeitam e se apoiam mutuamente.","f":"respeito e apoio entre campo e base"},"RES-08":{"dim":"Respeito","sub":"Cuidado","l":"","t":"Consigo equilibrar minha vida pessoal e profissional, com escalas, folgas e descansos respeitados.","f":"equilíbrio entre vida pessoal e profissional (escalas, folgas e descansos)"},"RES-09":{"dim":"Respeito","sub":"Cuidado","l":"","t":"As condições físicas do meu local de trabalho (base, escritório ou campo) são adequadas.","f":"condições físicas do local de trabalho"},"RES-10":{"dim":"Respeito","sub":"Cuidado","l":"","t":"Sinto que a Braserv se importa comigo como pessoa, e não só com o resultado que eu entrego.","f":"cuidado com a pessoa, e não só com o resultado"},"RES-11":{"dim":"Respeito","sub":"Cuidado","l":"","t":"Em momentos difíceis (saúde, família, imprevistos), sinto que posso contar com o apoio da empresa.","f":"apoio da empresa em momentos difíceis"},"IMP-01":{"dim":"Imparcialidade","sub":"Equidade","l":"","t":"Sou tratado(a) com justiça, independentemente de cargo, gênero, idade, raça, filial ou tempo de empresa.","f":"igualdade de tratamento"},"IMP-02":{"dim":"Imparcialidade","sub":"Equidade","l":"","t":"As oportunidades de crescimento e de treinamento chegam de forma justa para o campo e para o administrativo, em todas as filiais.","f":"equidade de oportunidades entre filiais e funções"},"IMP-03":{"dim":"Imparcialidade","sub":"Equidade","l":"","t":"Minha remuneração e meus benefícios são justos em comparação com colegas em funções parecidas.","f":"justiça da remuneração e dos benefícios"},"IMP-04":{"dim":"Imparcialidade","sub":"Imparcialidade","l":"","t":"As promoções e movimentações na Braserv acontecem por mérito e competência.","f":"mérito nas promoções e movimentações"},"IMP-05":{"dim":"Imparcialidade","sub":"Imparcialidade","l":"g","t":"Meu gestor direto trata toda a equipe com imparcialidade, sem preferidos.","f":"imparcialidade do gestor direto"},"IMP-06":{"dim":"Imparcialidade","sub":"Imparcialidade","l":"","t":"A avaliação do meu desempenho é justa e baseada em critérios que eu conheço.","f":"justiça e clareza da avaliação de desempenho"},"IMP-07":{"dim":"Imparcialidade","sub":"Justiça","l":"","t":"Tenho um canal confiável para relatar tratamento injusto, assédio ou desvio de conduta, e confio que será tratado com seriedade.","f":"confiança no canal de denúncia"},"IMP-08":{"dim":"Imparcialidade","sub":"Justiça","l":"","t":"Quando acontece um erro ou incidente, a apuração busca entender as causas, e não apenas apontar culpados.","f":"apuração de erros focada nas causas, e não em culpados"},"IMP-09":{"dim":"Imparcialidade","sub":"Justiça","l":"","t":"As regras da Braserv valem igualmente para todos, inclusive para a liderança.","f":"regras iguais para todos"},"ORG-01":{"dim":"Orgulho","sub":"Trabalho pessoal","l":"","t":"Meu trabalho tem um significado especial para mim.","f":"senso de propósito no próprio trabalho"},"ORG-02":{"dim":"Orgulho","sub":"Trabalho pessoal","l":"","t":"Sinto que meu trabalho faz diferença para o resultado e para a segurança da operação.","f":"percepção de que o próprio trabalho faz diferença"},"ORG-03":{"dim":"Orgulho","sub":"Equipe","l":"","t":"Sinto orgulho do que a minha equipe entrega.","f":"orgulho do que a equipe entrega"},"ORG-04":{"dim":"Orgulho","sub":"Equipe","l":"","t":"Minha equipe cuida da qualidade e da segurança do que entrega, mesmo sob pressão de prazo.","f":"qualidade e segurança da equipe sob pressão de prazo"},"ORG-05":{"dim":"Orgulho","sub":"Empresa","l":"","t":"Tenho orgulho de dizer que trabalho na Braserv.","f":"orgulho de ser Braserv"},"ORG-06":{"dim":"Orgulho","sub":"Empresa","l":"","t":"Acredito que a Braserv contribui de forma positiva para os clientes, para o setor e para a sociedade.","f":"contribuição da Braserv para clientes, setor e sociedade"},"ORG-07":{"dim":"Orgulho","sub":"Empresa","l":"","t":"A Braserv tem boa reputação junto aos clientes e às comunidades onde atua.","f":"reputação da Braserv"},"CAM-01":{"dim":"Camaradagem","sub":"Intimidade","l":"","t":"Posso ser eu mesmo(a) no trabalho, sem precisar esconder quem sou.","f":"autenticidade no trabalho"},"CAM-02":{"dim":"Camaradagem","sub":"Intimidade","l":"","t":"Tenho relações de confiança com as pessoas do meu time.","f":"relações de confiança no time"},"CAM-03":{"dim":"Camaradagem","sub":"Hospitalidade","l":"","t":"Quem chega à Braserv é bem recebido(a) e integrado(a) à equipe, desde a admissão.","f":"acolhimento e integração de quem chega"},"CAM-04":{"dim":"Camaradagem","sub":"Hospitalidade","l":"","t":"Sinto-me bem-vindo(a) e à vontade na minha base, escritório ou local de operação.","f":"sensação de ser bem-vindo no local de trabalho"},"CAM-05":{"dim":"Camaradagem","sub":"Comunidade","l":"","t":"Existe espírito de equipe entre as pessoas com quem trabalho, inclusive entre turnos e filiais.","f":"espírito de equipe entre turnos e filiais"},"CAM-06":{"dim":"Camaradagem","sub":"Comunidade","l":"","t":"Comemoramos as conquistas juntos.","f":"celebração conjunta das conquistas"},"CAM-07":{"dim":"Camaradagem","sub":"Comunidade","l":"","t":"Sinto que faço parte de um time e de algo maior: ser Braserv.","f":"pertencimento à Braserv"},"VAL-01":{"dim":"Valores Braserv","sub":"Honestidade","l":"","t":"Na Braserv, as pessoas falam a verdade, mesmo quando ela é desconfortável.","f":"cultura de falar a verdade"},"VAL-02":{"dim":"Valores Braserv","sub":"Honestidade","l":"","t":"Vejo as pessoas assumindo seus erros em vez de escondê-los.","f":"assumir os próprios erros"},"VAL-03":{"dim":"Valores Braserv","sub":"Honestidade","l":"","t":"Posso relatar um desvio de conduta, de ética ou de segurança sem medo de retaliação.","f":"liberdade para relatar desvios sem retaliação"},"VAL-04":{"dim":"Valores Braserv","sub":"Honestidade","l":"","t":"A Braserv age com integridade nas relações com clientes e fornecedores, sem \"jeitinho\".","f":"integridade nas relações com clientes e fornecedores"},"VAL-05":{"dim":"Valores Braserv","sub":"Excelência Empresarial","l":"","t":"A Braserv busca melhorar continuamente seus processos e resultados.","f":"melhoria contínua de processos e resultados"},"VAL-06":{"dim":"Valores Braserv","sub":"Excelência Empresarial","l":"","t":"Sou incentivado(a) a buscar excelência técnica e a entregar com qualidade no meu trabalho.","f":"incentivo à excelência técnica"},"VAL-07":{"dim":"Valores Braserv","sub":"Excelência Empresarial","l":"","t":"Tenho os procedimentos, as ferramentas e o suporte necessários para entregar com qualidade.","f":"procedimentos, ferramentas e suporte para entregar com qualidade"},"VAL-08":{"dim":"Valores Braserv","sub":"Excelência Empresarial","l":"","t":"Na Braserv, buscar excelência e tratar bem as pessoas andam juntos.","f":"excelência com respeito às pessoas"},"VAL-09":{"dim":"Valores Braserv","sub":"Responsabilidade Sustentável","l":"","t":"Percebo ações concretas da Braserv para reduzir impactos ao meio ambiente.","f":"ações concretas para reduzir impactos ambientais"},"VAL-10":{"dim":"Valores Braserv","sub":"Responsabilidade Sustentável","l":"","t":"A Braserv considera o impacto de suas decisões nas comunidades onde atua.","f":"cuidado com o impacto nas comunidades"},"VAL-11":{"dim":"Valores Braserv","sub":"Responsabilidade Sustentável","l":"","t":"Na minha área, cuidamos do descarte correto de resíduos e do uso consciente de recursos.","f":"boas práticas ambientais na própria área"},"VAL-12":{"dim":"Valores Braserv","sub":"Responsabilidade Sustentável","l":"","t":"Acredito que a Braserv é uma empresa sólida, que vai continuar gerando oportunidades daqui a muitos anos.","f":"solidez e perenidade da Braserv"},"VAL-13":{"dim":"Valores Braserv","sub":"Compromisso com a Vida","l":"d","t":"A direção demonstra, com decisões concretas, que segurança e saúde vêm antes de prazo e resultado.","f":"segurança e saúde acima de prazo e resultado nas decisões da direção"},"VAL-14":{"dim":"Valores Braserv","sub":"Compromisso com a Vida","l":"g","t":"Meu gestor direto dá o exemplo no cumprimento das Regras que Salvam Vidas.","f":"exemplo do gestor direto nas Regras que Salvam Vidas"},"VAL-15":{"dim":"Valores Braserv","sub":"Compromisso com a Vida","l":"","t":"As Regras que Salvam Vidas são conhecidas e praticadas por todos na minha área.","f":"prática das Regras que Salvam Vidas na área"},"VAL-16":{"dim":"Valores Braserv","sub":"Compromisso com a Vida","l":"","t":"Posso interromper uma atividade quando percebo risco, e sei que serei apoiado(a) pela liderança.","f":"autoridade para interromper atividade com risco"},"VAL-17":{"dim":"Valores Braserv","sub":"Compromisso com a Vida","l":"","t":"Sinto que a Braserv cuida da minha saúde física e emocional.","f":"cuidado com a saúde física e emocional"}};
+const DIMS = [{"nome":"Credibilidade","subs":["Comunicação","Competência","Integridade"]},{"nome":"Respeito","subs":["Suporte profissional","Colaboração","Cuidado"]},{"nome":"Imparcialidade","subs":["Equidade","Imparcialidade","Justiça"]},{"nome":"Orgulho","subs":["Trabalho pessoal","Equipe","Empresa"]},{"nome":"Camaradagem","subs":["Intimidade","Hospitalidade","Comunidade"]},{"nome":"Valores Braserv","subs":["Honestidade","Excelência Empresarial","Responsabilidade Sustentável","Compromisso com a Vida"]}];
+const ABERTAS = ["O que mais te orgulha de fazer parte da Braserv?","Se você pudesse mudar uma coisa para a Braserv ser um lugar ainda melhor para trabalhar, o que seria?","Conte uma situação recente em que você viu (ou sentiu falta de) um dos valores da Braserv no dia a dia: Honestidade, Excelência Empresarial, Responsabilidade Sustentável ou Compromisso com a Vida."];
+const INFO = {"Credibilidade|Comunicação":{"sig":"Se as pessoas sabem o que se espera delas e para onde a Braserv está indo.","forte":"A informação circula e as pessoas entendem o porquê das decisões, o que reduz ruído e boatos.","baixo":"As pessoas trabalham e decidem sem contexto, o que aumenta boatos, retrabalho e desconfiança.","acao":"Criar rotina de comunicação (alinhamentos de equipe, comunicados da direção e o boletim Fala, Braserv) e responder às dúvidas mais frequentes.","dono":"Direção e gestores, com apoio da GH"},"Credibilidade|Competência":{"sig":"Confiança na capacidade do gestor e da direção de conduzir o negócio.","forte":"A liderança é vista como preparada, o que sustenta o engajamento e a segurança nas decisões.","baixo":"Há dúvida sobre o preparo da liderança, o que pode gerar desengajamento e rotatividade, principalmente nas equipes de linha de frente.","acao":"Fortalecer o desenvolvimento de lideranças (PDL), com feedbacks 180° e acompanhamento dos gestores com menor resultado.","dono":"Direção e GH"},"Credibilidade|Integridade":{"sig":"Se a liderança faz o que diz e age com ética, inclusive sob pressão.","forte":"A liderança é coerente entre discurso e prática, base da confiança e da cultura de honestidade.","baixo":"Existe distância entre o discurso e a prática da liderança, o que corrói a confiança e enfraquece os demais resultados.","acao":"Reforçar o código de ética com a liderança, tratar rapidamente os casos de incoerência e dar visibilidade às decisões.","dono":"Direção, Compliance e GH"},"Respeito|Suporte profissional":{"sig":"Treinamento, recursos, reconhecimento e perspectiva de crescimento.","forte":"As pessoas sentem que a empresa investe nelas, o que fortalece a retenção e o desempenho.","baixo":"Falta de suporte e de perspectiva, com risco de desmotivação, saída de talentos e erros por falta de preparo.","acao":"Revisar as trilhas de treinamento por cargo, criar ritos de reconhecimento e divulgar as oportunidades internas.","dono":"GH e gestores"},"Respeito|Colaboração":{"sig":"Se a opinião das pessoas é ouvida e se as áreas e equipes trabalham de forma integrada.","forte":"Há escuta antes das decisões e integração entre áreas e entre campo e base.","baixo":"Decisões sem escuta e áreas isoladas geram retrabalho, conflito e a sensação de \"eles e nós\".","acao":"Criar espaços de escuta (grupos de escuta, encontros com a liderança) e rotinas de integração entre áreas e filiais.","dono":"GH e gestores"},"Respeito|Cuidado":{"sig":"Equilíbrio de vida, condições físicas do trabalho e apoio nos momentos difíceis.","forte":"As pessoas se sentem cuidadas, o que reduz afastamentos e fortalece o vínculo com a empresa.","baixo":"A sensação de ser visto apenas como mão de obra traz risco de adoecimento, absenteísmo e saída de pessoas.","acao":"Revisar escalas e folgas, as condições dos locais de trabalho e a rede de apoio (benefícios, saúde e acolhimento).","dono":"GH e Operações"},"Imparcialidade|Equidade":{"sig":"Se o tratamento, as oportunidades e a remuneração são percebidos como justos entre cargos, funções e filiais.","forte":"As pessoas percebem justiça entre funções e filiais, o que sustenta a legitimidade da empresa.","baixo":"Há percepção de desigualdade entre funções ou filiais, o que gera conflito e questionamento da liderança.","acao":"Revisar a política de cargos e salários e a distribuição de treinamentos e oportunidades por filial e função.","dono":"GH e direção"},"Imparcialidade|Imparcialidade":{"sig":"Se promoções, avaliações e decisões do gestor acontecem por mérito.","forte":"O mérito é percebido como critério, o que motiva quem se esforça.","baixo":"Há percepção de favoritismo, o que desmotiva quem se esforça e afasta bons profissionais.","acao":"Tornar claros os critérios de promoção e de avaliação e calibrar as avaliações entre os gestores.","dono":"GH e gestores"},"Imparcialidade|Justiça":{"sig":"Se há canal confiável, apuração justa dos erros e regras iguais para todos.","forte":"As pessoas confiam que os problemas serão tratados com seriedade e sem perseguição.","baixo":"O medo de denunciar ou de errar faz os problemas ficarem escondidos, inclusive os de segurança e de ética.","acao":"Fortalecer o canal de denúncia, comunicar o resultado das apurações (sem expor pessoas) e adotar a análise de incidentes com foco nas causas.","dono":"Compliance, GH e SMS"},"Orgulho|Trabalho pessoal":{"sig":"O significado que as pessoas enxergam no próprio trabalho.","forte":"As pessoas veem propósito no que fazem, o que aumenta o engajamento e a iniciativa.","baixo":"O trabalho é visto como \"só um emprego\", o que reduz engajamento e iniciativa.","acao":"Conectar cada função ao resultado e à segurança da operação, mostrando o impacto do trabalho de cada área.","dono":"GH e gestores"},"Orgulho|Equipe":{"sig":"Orgulho do que o time entrega e do cuidado com qualidade e segurança.","forte":"As equipes se orgulham do que entregam e mantêm padrão mesmo sob pressão.","baixo":"Equipes sem referência de qualidade, ou sob pressão que compromete a qualidade e a segurança.","acao":"Dar visibilidade às entregas das equipes e revisar a carga de trabalho e os prazos que pressionam qualidade e segurança.","dono":"Gestores, Operações e GH"},"Orgulho|Empresa":{"sig":"Orgulho de ser Braserv: reputação e contribuição para clientes e sociedade.","forte":"A marca Braserv é motivo de orgulho, o que favorece a indicação de candidatos e a retenção.","baixo":"A baixa identificação com a marca reduz a indicação de candidatos e a retenção.","acao":"Fortalecer a marca empregadora (comunicação interna e externa) e mostrar as conquistas e os resultados da Braserv.","dono":"GH e Comunicação"},"Camaradagem|Intimidade":{"sig":"Se as pessoas podem ser autênticas e confiam umas nas outras.","forte":"Há confiança e abertura, o que facilita falar de erros e dificuldades.","baixo":"Ambiente de cautela excessiva, com pouca abertura para falar de erros e dificuldades.","acao":"Trabalhar confiança e segurança psicológica com as lideranças e promover dinâmicas de integração de equipe.","dono":"GH e gestores"},"Camaradagem|Hospitalidade":{"sig":"Como quem chega é recebido e integrado, desde a admissão.","forte":"A chegada é bem acolhida, o que reduz a rotatividade inicial e o tempo até produzir com segurança.","baixo":"A integração é fraca, o que aumenta a rotatividade nos primeiros meses e o tempo até produzir com segurança.","acao":"Revisar o processo de admissão e integração (acolhimento na chegada, trilha inicial e acompanhamento dos primeiros 45 dias).","dono":"GH e gestores"},"Camaradagem|Comunidade":{"sig":"Espírito de equipe, celebração e pertencimento, inclusive entre turnos e filiais.","forte":"Existe senso de time que vai além da própria equipe, o que sustenta a cultura Braserv.","baixo":"Times isolados, sem sensação de pertencer à Braserv como um todo.","acao":"Criar rituais de integração entre filiais e turnos e celebrar conquistas e marcos (tempo de casa, metas de segurança).","dono":"GH, Comunicação e gestores"},"Valores Braserv|Honestidade":{"sig":"Se a verdade, a assunção de erros e a integridade são prática no dia a dia, e não apenas discurso.","forte":"A verdade circula e os erros aparecem a tempo de serem corrigidos, o que protege a segurança, a ética e a reputação.","baixo":"O medo de falar a verdade esconde riscos e erros, o que ameaça a segurança, a ética e a reputação.","acao":"Reforçar o código de ética e o canal de denúncia, e reconhecer publicamente quem aponta problemas e assume erros.","dono":"Direção, Compliance e GH"},"Valores Braserv|Excelência Empresarial":{"sig":"Melhoria contínua, qualidade técnica e suporte para entregar bem.","forte":"A empresa busca melhorar sempre e dá às pessoas o suporte para entregar com qualidade.","baixo":"Falta método ou suporte para entregar com qualidade, o que gera retrabalho e risco de perder clientes.","acao":"Mapear gargalos de processo e de ferramentas, reforçar os treinamentos técnicos e valorizar as melhorias propostas pelas equipes.","dono":"Operações, Qualidade e GH"},"Valores Braserv|Responsabilidade Sustentável":{"sig":"Se as pessoas enxergam ações concretas ambientais, sociais e de perenidade do negócio.","forte":"O valor é visto na prática, o que fortalece o orgulho e a reputação da Braserv.","baixo":"O valor é visto como discurso, porque as pessoas não enxergam ações concretas.","acao":"Divulgar as ações e os indicadores ambientais e sociais e envolver as equipes nas boas práticas da própria área.","dono":"SMS / Meio Ambiente e Comunicação"},"Valores Braserv|Compromisso com a Vida":{"sig":"Se segurança e saúde vêm antes de prazo e resultado, na prática e pelo exemplo da liderança.","forte":"A segurança é vivida na prática e pelo exemplo da liderança, o que protege vidas e o negócio.","baixo":"A percepção de que o prazo vence a segurança é o risco mais grave, com impacto direto na vida das pessoas e no negócio.","acao":"Prioridade máxima: investigar as causas com SMS e lideranças, reforçar o direito de interromper atividades e o exemplo dos gestores, e acompanhar com plano de ação imediato.","dono":"SMS, Operações e direção"}};
+const GPTW = ["Credibilidade","Respeito","Imparcialidade","Orgulho","Camaradagem"];
+
+/* Faixas de leitura (editáveis): referência interna da Braserv, não são cortes oficiais do GPTW */
+const BANDAS = {forte:80, atencao:60};
+const nivel = p => p==null?null:(p>=BANDAS.forte?"forte":p>=BANDAS.atencao?"atencao":"prioridade");
+const NIVEL_TXT = {forte:"ponto forte", atencao:"ponto de atenção", prioridade:"prioridade de ação"};
+const $ = (s,r=document)=>r.querySelector(s);
+const esc = s => String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt = (n,d=0)=>Number(n).toLocaleString("pt-BR",{minimumFractionDigits:d,maximumFractionDigits:d});
+
+let token = null, rows = [], F = {filial:"",area:"",tempo:"",funcao:""}, verMais = {};
+
+/* ===== Acesso ===== */
+async function entrar(email, senha){
+  const r = await fetch(SUPABASE_URL+"/auth/v1/token?grant_type=password",{method:"POST",
+    headers:{"Content-Type":"application/json",apikey:SUPABASE_ANON_KEY},body:JSON.stringify({email,password:senha})});
+  if(!r.ok) throw new Error("E-mail ou senha incorretos.");
+  return (await r.json()).access_token;
+}
+async function carregar(){
+  let todos = [], de = 0, passo = 1000;
+  while(true){
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/respostas?select=*&order=criado_em.desc&limit=${passo}&offset=${de}`,
+      {headers:{apikey:SUPABASE_ANON_KEY,Authorization:"Bearer "+token}});
+    if(r.status===401) throw new Error("sessao");
+    if(!r.ok) throw new Error("Não foi possível ler as respostas.");
+    const lote = await r.json();
+    todos = todos.concat(lote);
+    if(lote.length < passo) break;
+    de += passo;
+  }
+  rows = todos.map(r=>{ const m={}; (r.itens||[]).forEach(i=>{m[i.id]=i.v}); r.m=m; return r; });
+  $("#atual").textContent = "Atualizado em " + new Date().toLocaleString("pt-BR");
+  montarFiltros(); render();
+}
+
+/* ===== Cálculos ===== */
+const fav = a => a.length ? a.filter(v=>v>=5).length/a.length*100 : null;
+const med = a => a.length ? a.reduce((x,y)=>x+y,0)/a.length : null;
+function valores(rs, ids){ const o=[]; rs.forEach(r=>ids.forEach(id=>{ if(r.m[id]!=null) o.push(r.m[id]); })); return o; }
+const idsDe = fn => Object.keys(Q).filter(id=>fn(Q[id]));
+function enps(rs){
+  if(!rs.length) return null;
+  const p=rs.filter(r=>r.enps>=9).length, d=rs.filter(r=>r.enps<=6).length, n=rs.length;
+  return {score:Math.round((p-d)/n*100), p:p/n*100, d:d/n*100, neu:(n-p-d)/n*100};
+}
+function filtrar(base){
+  return (base||rows).filter(r=>(!F.filial||r.filial===F.filial)&&(!F.area||r.area===F.area)&&(!F.tempo||r.tempo===F.tempo)&&(!F.funcao||r.funcao===F.funcao));
+}
+const cor = p => p==null?"#ccd":(p>=80?"var(--navy)":p>=60?"var(--yellow)":"var(--orange)");
+const corTxt = p => p==null?"var(--text)":(p>=80?"#fff":"var(--navy)");
+
+/* ===== Filtros ===== */
+function opcoes(campo){ return [...new Set(rows.map(r=>r[campo]).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"pt-BR")); }
+function montarFiltros(){
+  [["filial","Todas as filiais"],["area","Todas as áreas"],["tempo","Todos os tempos"],["funcao","Todas as funções"]].forEach(([c,t])=>{
+    const el=$("#f-"+c), atual=F[c];
+    el.innerHTML = `<option value="">${t}</option>` + opcoes(c).map(o=>`<option${o===atual?" selected":""}>${esc(o)}</option>`).join("");
+  });
+}
+
+/* ===== Blocos ===== */
+function barra(nome, p, m, peq, dica){
+  return `<div class="row${peq?" s":""}"><div class="nm" title="${esc(dica||"")}">${esc(nome)}</div>
+    <div class="trk"><div class="fil" style="width:${p==null?0:p}%;background:${cor(p)}"></div></div>
+    <div class="vl">${p==null?"—":fmt(p)+"%"}<span>${m==null?"":"média "+fmt(m,1)}</span></div></div>`;
+}
+function blocoDimensoes(rs, lista){
+  return lista.map(d=>{
+    const ids = idsDe(q=>q.dim===d.nome), v = valores(rs, ids);
+    let h = `<div class="card"><span class="chip">${esc(d.nome)}</span>` + barra("Geral", fav(v), med(v));
+    d.subs.forEach(s=>{ const vs = valores(rs, idsDe(q=>q.dim===d.nome&&q.sub===s)); h += barra(s, fav(vs), med(vs), true, (INFO[d.nome+"|"+s]||{}).sig); });
+    return h + leituraDim(rs,d) + "</div>";
+  }).join("");
+}
+function mapaCalor(){
+  const base = filtrar(rows.map(r=>r)).length ? null : null; /* placeholder para clareza */
+  const semFilial = rows.filter(r=>(!F.area||r.area===F.area)&&(!F.tempo||r.tempo===F.tempo)&&(!F.funcao||r.funcao===F.funcao));
+  const filiais = [...new Set(semFilial.map(r=>r.filial))].sort((a,b)=>a.localeCompare(b,"pt-BR"));
+  if(filiais.length<2) return "";
+  let h = `<section><h2>Mapa por filial</h2><p class="sub">% de respostas favoráveis (notas 5 e 6) por dimensão. Células com menos de ${MIN_GRUPO} respostas ficam ocultas para proteger o anonimato.</p><div class="card scroll"><table class="hm"><tr><th></th>`;
+  filiais.forEach(f=>{ h += `<th>${esc(f)}<br><span style="font-weight:500">${semFilial.filter(r=>r.filial===f).length} resp.</span></th>`; });
+  h += "</tr>";
+  DIMS.forEach(d=>{
+    h += `<tr><td>${esc(d.nome)}</td>`;
+    filiais.forEach(f=>{
+      const g = semFilial.filter(r=>r.filial===f);
+      const p = g.length>=MIN_GRUPO ? fav(valores(g, idsDe(q=>q.dim===d.nome))) : null;
+      h += `<td style="background:${p==null?"#EEF0F8":cor(p)};color:${corTxt(p)}">${p==null?"—":fmt(p)+"%"}</td>`;
+    });
+    h += "</tr>";
+  });
+  return h + "</table></div>" + textoFiliais(semFilial, filiais.filter(f=>semFilial.filter(r=>r.filial===f).length>=MIN_GRUPO)) + "</section>";
+}
+function itensLista(arr,forca){ const auto=forca==="auto";
+  return `<ol class="it">` + arr.map((x,ix)=>`<li><div class="pct" style="background:${cor(x.p)};color:${corTxt(x.p)}">${fmt(x.p)}%</div>
+    <div>${esc(Q[x.id].t)}<small>${esc(Q[x.id].dim)} · ${esc(Q[x.id].sub)}${Q[x.id].l?" · "+(Q[x.id].l==="g"?"gestor direto":"direção"):""}</small><span class="rd">${leituraItem(x,auto?x.p>=BANDAS.forte:forca,auto&&ix<arr.length-1)}</span></div></li>`).join("") + "</ol>";
+}
+function comentarios(rs){
+  const por = {1:[],2:[],3:[]};
+  rs.forEach(r=>(r.abertas||[]).forEach(a=>{ const t=String(a.a||"").trim(); if(t && por[a.n]) por[a.n].push(t); }));
+  let h = `<section><h2>Comentários</h2><p class="sub">Textos sem filial, área ou data, para não identificar quem escreveu. Leia com cuidado: podem conter nomes.</p><div class="grid g3">`;
+  [1,2,3].forEach(n=>{
+    const lim = verMais[n] ? 9999 : 8, lst = por[n];
+    h += `<div class="card"><span class="chip">${esc(ABERTAS[n-1]||"")}</span><div style="margin-top:8px"><span class="pill">${lst.length} comentário${lst.length===1?"":"s"}</span></div>` +
+      lst.slice(0,lim).map(t=>`<div class="cm">${esc(t)}</div>`).join("") +
+      (lst.length>lim?`<button class="btn sec mais" data-n="${n}" style="margin-top:10px">Mostrar todos</button>`:"") + "</div>";
+  });
+  return h + "</div></section>";
+}
+
+
+/* ===== Leituras interpretativas ===== */
+function subStats(rs){
+  const o=[]; DIMS.forEach(d=>d.subs.forEach(s=>{ const v=valores(rs,idsDe(q=>q.dim===d.nome&&q.sub===s)); if(v.length) o.push({dim:d.nome,sub:s,p:fav(v),i:INFO[d.nome+"|"+s]||{}}); }));
+  return o.sort((a,b)=>b.p-a.p);
+}
+function intAdesao(n,filtrando){
+  if(filtrando) return `Recorte com ${n} respostas. Quanto menor o grupo, maior a margem de erro; use como indicação, não como veredito.`;
+  const N=TOTAL_COLABORADORES, ad=n/N*100, me=n>=N?0:1.96*Math.sqrt(.25/n*(N-n)/(N-1))*100;
+  const t = ad>=80?"Base muito representativa: os resultados refletem bem a empresa.":ad>=60?"Boa representatividade: os resultados são confiáveis para decisões gerais.":"Adesão abaixo de 60%: leia com cautela e reforce a divulgação nas filiais com menos respostas.";
+  return `Margem de erro de ±${fmt(me,1)} p.p. (95% de confiança). ${t}`;
+}
+function intConfianca(p){
+  const lv=nivel(p);
+  return lv==="forte"?"Média das cinco dimensões em nível forte: as pessoas confiam na empresa. Foco em manter e em tratar os pontos isolados.":lv==="atencao"?"Confiança em nível intermediário: há base, mas existem dimensões que precisam de plano de ação (veja os pontos de atenção abaixo).":"Confiança baixa: risco para engajamento e retenção. Priorizar um plano de ação com a direção e acompanhar de perto.";
+}
+function intGeral(p,conf){
+  const t=nivel(p)==="forte"?"A maioria considera a Braserv um excelente lugar para trabalhar.":nivel(p)==="atencao"?"Parte relevante das pessoas ainda não vê a Braserv como excelente lugar para trabalhar.":"Menos de 60% veem a Braserv como excelente lugar para trabalhar: sinal de alerta.";
+  return t+(p!=null&&conf!=null&&conf-p>=8?" A confiança está acima desta nota: o clima é melhor do que a percepção geral, o que sugere fatores específicos a investigar.":"");
+}
+function leituraDim(rs,d){
+  const subs=subStats(rs).filter(x=>x.dim===d.nome);
+  if(!subs.length) return "";
+  const geral=fav(valores(rs,idsDe(q=>q.dim===d.nome))), lv=nivel(geral), top=subs[0], low=subs[subs.length-1];
+  let t=`<b>${fmt(geral)}% favorável: ${NIVEL_TXT[lv]}.</b> `;
+  if(nivel(low.p)==="forte") t+=`Todas as subdimensões estão em nível forte. ${top.i.forte||""} Manter as práticas atuais e acompanhar na próxima rodada.`;
+  else{
+    if(nivel(top.p)==="forte") t+=`Ponto mais forte: ${esc(top.sub)} (${fmt(top.p)}%). ${top.i.forte||""} `;
+    t+=`Ponto de atenção: <b>${esc(low.sub)}</b> (${fmt(low.p)}%). ${nivel(low.p)==="prioridade"?(low.i.baixo||""):"Pede atenção e acompanhamento."} <b>Ação sugerida:</b> ${low.i.acao||""}`;
+  }
+  return `<div class="leit ${lv}">${t}</div>`;
+}
+function enpsLeitura(n){
+  const z = n.score>=75?"zona de excelência":n.score>=50?"zona de qualidade":n.score>=0?"zona de aperfeiçoamento":"zona crítica";
+  const t = n.score>=75?"A maioria recomenda a Braserv com entusiasmo, o que favorece indicação de candidatos e retenção."
+    : n.score>=50?"Há mais promotores do que detratores com folga; o desafio é converter os neutros em promotores."
+    : n.score>=0?"Os promotores superam os detratores por pouco; vale entender o que separa quem recomenda de quem não recomenda."
+    : "Há mais detratores do que promotores: risco de saída de pessoas e de imagem como empregadora. Investigar as causas com os comentários e os pontos de atenção.";
+  return `<b>${z}.</b> ${fmt(n.p)}% são promotores e ${fmt(n.d)}% detratores. ${t}`;
+}
+function leituraLideranca(vg,vd){
+  const g=fav(vg), d=fav(vd); if(g==null||d==null) return "";
+  const dif=g-d;
+  const t = Math.abs(dif)<5 ? "Gestor direto e direção são vistos de forma parecida."
+    : dif>0 ? `O gestor direto (${fmt(g)}%) é mais bem avaliado que a direção (${fmt(d)}%): a confiança nasce na proximidade. Vale a direção ficar mais presente e comunicar melhor as decisões.`
+    : `A direção (${fmt(d)}%) é mais bem avaliada que o gestor direto (${fmt(g)}%): o ponto de atenção está na liderança de proximidade. Priorizar o desenvolvimento de gestores (PDL) e o feedback 180°.`;
+  return `<div class="leit ${nivel(Math.min(g,d))}">${t}</div>`;
+}
+function leituraItem(x,forca,semAcao){
+  const q=Q[x.id], i=INFO[q.dim+"|"+q.sub]||{};
+  return forca ? `${fmt(x.p)}% avaliam favoravelmente: <b>${esc(q.f||"")}</b> é um ponto forte a preservar.`
+               : `Só ${fmt(x.p)}% avaliam favoravelmente <b>${esc(q.f||"")}</b>.${semAcao?"":` <b>Ação sugerida:</b> ${i.acao||""}`}`;
+}
+function textoFiliais(semFilial, filiais, campo){ campo=campo||"filial";
+  let melhor=null;
+  DIMS.forEach(d=>{
+    const l=filiais.map(f=>{const g=semFilial.filter(r=>r[campo]===f); return g.length>=MIN_GRUPO?{f,p:fav(valores(g,idsDe(q=>q.dim===d.nome)))}:null;}).filter(Boolean).sort((a,b)=>b.p-a.p);
+    if(l.length>=2){ const gap=l[0].p-l[l.length-1].p; if(!melhor||gap>melhor.gap) melhor={d:d.nome,hi:l[0],lo:l[l.length-1],gap}; }
+  });
+  if(!melhor||melhor.gap<10) return `<div class="leit">As unidades têm percepções próximas (diferença menor que 10 pontos percentuais em todas as dimensões). Ações de cultura podem ser conduzidas de forma corporativa.</div>`;
+  return `<div class="leit ${melhor.gap>=20?"prioridade":"atencao"}">A maior diferença entre unidades está em <b>${esc(melhor.d)}</b>: ${esc(melhor.hi.f)} (${fmt(melhor.hi.p)}%) contra ${esc(melhor.lo.f)} (${fmt(melhor.lo.p)}%), ${fmt(melhor.gap)} pontos percentuais. Vale entender o que ${esc(melhor.hi.f)} faz de diferente para replicar, e investigar as causas em ${esc(melhor.lo.f)} com os gestores locais.</div>`;
+}
+function leituraEstrategica(rs,n,vG,vg,vd){
+  const subs=subStats(rs); if(!subs.length) return "";
+  const topo=subs[0], base=subs[subs.length-1], conf=fav(vG);
+  const valSubs=subs.filter(x=>x.dim==="Valores Braserv");
+  const li=[];
+  li.push(`<li><b>Panorama:</b> índice de confiança de ${fmt(conf)}% (${NIVEL_TXT[nivel(conf)]}) e eNPS de ${n.score>0?"+":""}${n.score}. ${n.score>=50?"Cenário favorável, com foco em sustentar e aprofundar.":n.score>=0?"Cenário intermediário: há base boa, mas com pontos que precisam de plano.":"Cenário de alerta: exige plano de ação da liderança."}</li>`);
+  li.push(`<li><b>Maior força:</b> ${esc(topo.sub)} em ${esc(topo.dim)} (${fmt(topo.p)}%). ${nivel(topo.p)==="forte"?(topo.i.forte||""):"É o melhor resultado relativo, mas ainda abaixo do nível forte ("+BANDAS.forte+"%)."}</li>`);
+  li.push(`<li><b>Maior prioridade:</b> ${esc(base.sub)} em ${esc(base.dim)} (${fmt(base.p)}%). ${nivel(base.p)==="forte"?"Mesmo o ponto mais baixo está em nível forte; manter o acompanhamento.":(base.i.baixo||"")+` <b>Ação:</b> ${base.i.acao||""} <b>Dono sugerido:</b> ${base.i.dono||""}.`}</li>`);
+  if(valSubs.length>1) li.push(`<li><b>Valores:</b> o mais vivido é <b>${esc(valSubs[0].sub)}</b> (${fmt(valSubs[0].p)}%) e o menos percebido é <b>${esc(valSubs[valSubs.length-1].sub)}</b> (${fmt(valSubs[valSubs.length-1].p)}%).</li>`);
+  const vida=valSubs.find(x=>x.sub==="Compromisso com a Vida");
+  if(vida && vida.p<BANDAS.forte) li.push(`<li class="alerta"><b>Alerta de segurança:</b> Compromisso com a Vida está em ${fmt(vida.p)}%, abaixo do nível forte (${BANDAS.forte}%). Por ser o valor com maior impacto humano e legal, recomenda-se plano de ação imediato com SMS e lideranças, antes dos demais temas.</li>`);
+  const lg=fav(vg), ld=fav(vd);
+  if(lg!=null&&ld!=null&&Math.abs(lg-ld)>=5) li.push(`<li><b>Liderança:</b> ${lg>ld?"gestor direto "+fmt(lg)+"% x direção "+fmt(ld)+"%: a direção precisa se aproximar das pessoas.":"direção "+fmt(ld)+"% x gestor direto "+fmt(lg)+"%: o foco é desenvolver a liderança de proximidade."}</li>`);
+  return `<section><div class="card estr"><span class="chip">Leitura estratégica para a Gestão Humana</span><ul>${li.join("")}</ul></div></section>`;
+}
+function okrs(rs){
+  const subs=subStats(rs); if(!subs.length) return "";
+  const baixos=subs.filter(x=>x.p<BANDAS.forte).slice(-3).reverse();
+  const fortes=subs.filter(x=>x.p>=BANDAS.forte).slice(0,2);
+  if(!baixos.length&&!fortes.length) return "";
+  let h=`<section><h2>OKRs sugeridos para a Gestão Humana</h2><p class="sub">Ponto de partida gerado dos resultados. Ajuste a meta e o prazo com a liderança antes de comprometer.</p><div class="grid g3">`;
+  baixos.forEach(x=>{ const meta=Math.min(95,Math.round(x.p+10));
+    h+=`<div class="card okr"><span class="chip" style="background:var(--orange);color:var(--navy)">Melhorar</span><h3>Elevar ${esc(x.sub)} (${esc(x.dim)})</h3>
+    <p><b>Resultado-chave:</b> sair de ${fmt(x.p)}% para ${meta}% favorável na próxima pesquisa.</p><p><b>Ação:</b> ${x.i.acao||""}</p><p><b>Dono sugerido:</b> ${x.i.dono||""}</p></div>`; });
+  fortes.forEach(x=>{ h+=`<div class="card okr pres"><span class="chip" style="background:var(--lime);color:var(--navy)">Preservar</span><h3>Manter ${esc(x.sub)} (${esc(x.dim)})</h3>
+    <p><b>Resultado-chave:</b> manter acima de ${BANDAS.forte}% (hoje ${fmt(x.p)}%).</p><p><b>Ação:</b> reconhecer e divulgar o que funciona bem e proteger essas práticas em mudanças de liderança e de escala.</p></div>`; });
+  return h+"</div></section>";
+}
+function comoInterpretar(){
+  return `<details id="mais" class="card" style="margin-top:30px"><summary>Como interpretar este painel</summary>
+  <p><b>% favorável:</b> proporção de respostas com nota 5 ou 6 (concordo, concordo totalmente) numa escala de 1 a 6. É o indicador principal, no estilo do GPTW. A <b>média</b> mostra a intensidade.</p>
+  <p><b>Faixas de leitura (referência interna da Braserv, editáveis em BANDAS):</b></p>
+  <ul><li>${BANDAS.forte}% ou mais: ponto forte, manter e reconhecer.</li><li>${BANDAS.atencao}% a ${BANDAS.forte-1}%: ponto de atenção, acompanhar.</li><li>Abaixo de ${BANDAS.atencao}%: prioridade de ação, com plano e dono.</li></ul>
+  <p><b>eNPS:</b> % de promotores (9 e 10) menos % de detratores (0 a 6). As zonas usadas (≥75 excelência, 50 a 74 qualidade, 0 a 49 aperfeiçoamento, abaixo de 0 crítica) são referências comuns de mercado, não cortes oficiais do GPTW.</p>
+  <p><b>Representatividade:</b> a margem de erro considera ${TOTAL_COLABORADORES} colaboradores e 95% de confiança. Nos recortes por filial ou área ela é maior.</p>
+  <p><b>Anonimato:</b> grupos com menos de ${MIN_GRUPO} respostas não são exibidos.</p>
+  <p>As leituras e os OKRs são sugestões geradas automaticamente. Servem de ponto de partida para a análise da Gestão Humana, que conhece o contexto de cada filial.</p></details>`;
+}
+
+
+/* ===== Gráficos (SVG, sem bibliotecas externas) ===== */
+const HEX={navy:"#293684",yellow:"#E8AA21",blue:"#3E7AC2",orange:"#F7873B",lime:"#A8B937",grey:"#9AA0C4"};
+const corHex = p => p==null?"#ccd":(p>=BANDAS.forte?HEX.navy:p>=BANDAS.atencao?HEX.yellow:HEX.orange);
+function donut(p,centro,sub,col){
+  const r=46,c=2*Math.PI*r,v=Math.max(0,Math.min(100,p||0))/100*c;
+  return `<div class="dn"><svg viewBox="0 0 120 120" role="img" aria-label="${esc(sub)}: ${esc(centro)}"><circle cx="60" cy="60" r="${r}" fill="none" stroke="#E9EBF5" stroke-width="13"/><circle cx="60" cy="60" r="${r}" fill="none" stroke="${col}" stroke-width="13" stroke-linecap="round" stroke-dasharray="${v} ${c}" transform="rotate(-90 60 60)"/><text x="60" y="67" text-anchor="middle" font-family="Exo 2,sans-serif" font-weight="800" font-size="24" fill="#293684">${esc(centro)}</text></svg><small>${esc(sub)}</small></div>`;
+}
+function rotulo(t,x,y,anc){
+  const w=t.split(" "); let l1=t,l2="";
+  if(t.length>14&&w.length>1){ let best=1,bd=1e9; for(let i=1;i<w.length;i++){ const d=Math.abs(w.slice(0,i).join(" ").length-w.slice(i).join(" ").length); if(d<bd){bd=d;best=i;} } l1=w.slice(0,best).join(" "); l2=w.slice(best).join(" "); }
+  const y0=l2?y-3:y+4;
+  return `<text x="${x.toFixed(1)}" y="${y0.toFixed(1)}" text-anchor="${anc}" font-size="14" font-weight="700" fill="#293684">${esc(l1)}${l2?`<tspan x="${x.toFixed(1)}" dy="16">${esc(l2)}</tspan>`:""}</text>`;
+}
+function radar(labels, series){
+  const S=420,c=S/2,R=S/2-78,n=labels.length;
+  const pt=(i,v)=>{const a=-Math.PI/2+i*2*Math.PI/n,r=R*v/100;return [c+r*Math.cos(a),c+r*Math.sin(a)];};
+  let g="";
+  [20,40,60,80,100].forEach(l=>{ g+=`<polygon points="${labels.map((_,i)=>pt(i,l).map(x=>x.toFixed(1)).join(",")).join(" ")}" fill="none" stroke="${l===80?"#B9BFE0":"#E3E6F2"}" ${l===80?'stroke-dasharray="4 3"':""}/>`; });
+  g+=`<text x="${c+4}" y="${c-R*0.8-3}" font-size="10" fill="#9AA0C4">80%</text>`;
+  labels.forEach((t,i)=>{ const [x,y]=pt(i,100),[lx,ly]=pt(i,116),ca=Math.cos(-Math.PI/2+i*2*Math.PI/n);
+    g+=`<line x1="${c}" y1="${c}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="#E3E6F2"/>${rotulo(t,lx,ly,Math.abs(ca)<.3?"middle":ca>0?"start":"end")}`; });
+  series.forEach(s=>{ const pts=s.v.map((v,i)=>pt(i,v==null?0:v));
+    g+=`<polygon points="${pts.map(q=>q.map(x=>x.toFixed(1)).join(",")).join(" ")}" fill="${s.cor}" fill-opacity="${s.base?0:.18}" stroke="${s.cor}" stroke-width="${s.base?2:3}" ${s.base?'stroke-dasharray="6 4"':""}/>`;
+    if(!s.base) pts.forEach((q,i)=>{ g+=`<circle cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="4.5" fill="${s.cor}"/>`; }); });
+  const lg=series.map(s=>`<span><i style="background:${s.cor}"></i>${esc(s.nome)}</span>`).join("");
+  return `<div class="radar"><svg viewBox="-90 0 ${S+180} ${S}" role="img" aria-label="Gráfico de radar">${g}</svg><div class="lg2">${lg}</div></div>`;
+}
+function linhaTempo(rs){
+  const d={}; rs.forEach(r=>{const k=String(r.criado_em||"").slice(0,10); if(k) d[k]=(d[k]||0)+1;});
+  const ks=Object.keys(d).sort(); if(ks.length<2) return "";
+  const W=560,H=130,max=Math.max(...ks.map(k=>d[k])),bw=Math.max(3,Math.min(26,(W-30)/ks.length-3));
+  const x=i=>20+i*((W-40)/Math.max(1,ks.length-1));
+  let g=ks.map((k,i)=>{const h=d[k]/max*(H-34);return `<rect x="${(x(i)-bw/2).toFixed(1)}" y="${(H-20-h).toFixed(1)}" width="${bw}" height="${h.toFixed(1)}" rx="3" fill="${HEX.blue}"><title>${k}: ${d[k]}</title></rect>`;}).join("");
+  const br=k=>k.slice(8,10)+"/"+k.slice(5,7);
+  g+=`<text x="20" y="${H-4}" font-size="11" fill="#7a80a6">${br(ks[0])}</text><text x="${W-20}" y="${H-4}" text-anchor="end" font-size="11" fill="#7a80a6">${br(ks[ks.length-1])}</text>`;
+  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto" role="img" aria-label="Respostas por dia">${g}</svg>`;
+}
+function distribBloco(rs,lista){
+  return lista.map(d=>{
+    const v=valores(rs,idsDe(q=>q.dim===d.nome)); if(!v.length) return "";
+    const t=v.length,a=v.filter(x=>x<=2).length/t*100,b=v.filter(x=>x===3||x===4).length/t*100,c=100-a-b;
+    const seg=(w,col,tc)=>`<div style="width:${w}%;background:${col};color:${tc||"#fff"}">${w>=8?fmt(w)+"%":""}</div>`;
+    return `<div class="drow"><div class="nm" style="font-weight:600;color:var(--navy)">${esc(d.nome)}</div><div class="dist">${seg(a,HEX.orange)}${seg(b,"#E6E8F4","#293684")}${seg(c,HEX.navy)}</div></div>`;
+  }).join("")+`<div class="leg"><span><i style="background:var(--orange)"></i>Desfavorável (notas 1–2)</span><span><i style="background:#E6E8F4"></i>Neutro (3–4)</span><span><i style="background:var(--navy)"></i>Favorável (5–6)</span></div>`;
+}
+
+/* ===== Filiais e áreas ===== */
+let tab="visao", verUn="filial";
+const TABS=[["visao","Visão geral"],["dimensoes","Dimensões"],["valores","Valores Braserv"],["unidades","Filiais e áreas"],["lideranca","Liderança e destaques"],["acoes","Plano de ação"],["comentarios","Comentários"]];
+function unidadesView(){
+  const campo=verUn, rot=campo==="filial"?"filial":"área";
+  const base=rows.filter(r=>(campo==="filial"||!F.filial||r.filial===F.filial)&&(campo==="area"||!F.area||r.area===F.area)&&(!F.tempo||r.tempo===F.tempo)&&(!F.funcao||r.funcao===F.funcao));
+  const semOutros=!F.tempo&&!F.funcao&&(campo==="filial"?!F.area:!F.filial);
+  const nomes=[...new Set(base.map(r=>r[campo]).filter(Boolean))], idsG=idsDe(q=>GPTW.includes(q.dim)), lin=[]; let ocultas=0;
+  nomes.forEach(nm=>{ const g=base.filter(r=>r[campo]===nm); if(g.length<MIN_GRUPO){ocultas++;return;}
+    const hc=HEADCOUNT[nm];
+    lin.push({nm,n:g.length,conf:fav(valores(g,idsG)),enps:enps(g).score,ds:DIMS.map(d=>fav(valores(g,idsDe(q=>q.dim===d.nome)))),ad:(hc&&semOutros)?g.length/hc*100:null}); });
+  lin.sort((a,b)=>b.conf-a.conf);
+  let h=`<section><h2>Comparativo por ${rot}</h2><p class="sub">Clique em uma linha para abrir a visão completa da unidade. Unidades com menos de ${MIN_GRUPO} respostas ficam ocultas para proteger o anonimato.</p>
+   <div class="seg"><button class="tg${campo==="filial"?" on":""}" data-un="filial">Por filial</button><button class="tg${campo==="area"?" on":""}" data-un="area">Por área</button></div>`;
+  if(lin.length<2){ return h+`<div class="aviso">Há menos de duas ${campo==="filial"?"filiais":"áreas"} com respostas suficientes neste recorte.</div></section>`; }
+  const top=lin[0], low=lin[lin.length-1], best=[...lin].sort((a,b)=>b.enps-a.enps)[0];
+  h+=`<div class="call"><div class="card"><div class="rot" style="font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase">Maior índice de confiança</div><b class="big">${esc(top.nm)}</b><small>${fmt(top.conf)}% favorável · ${top.n} respostas</small></div>
+   <div class="card"><div class="rot" style="font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase">Menor índice de confiança</div><b class="big">${esc(low.nm)}</b><small>${fmt(low.conf)}% favorável · ${low.n} respostas</small></div>
+   <div class="card"><div class="rot" style="font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase">Amplitude · melhor eNPS</div><b class="big">${fmt(top.conf-low.conf)} p.p.</b><small>${esc(best.nm)} lidera no eNPS (${best.enps>0?"+":""}${best.enps})</small></div></div>`;
+  h+=`<div class="card"><span class="chip">Ranking por índice de confiança</span>${lin.map(x=>barra(x.nm,x.conf,null)).join("")}</div>`;
+  h+=`<div class="card scroll" style="margin-top:16px"><span class="chip">Scorecard por dimensão (% favorável)</span><table class="sc" style="margin-top:8px"><tr><th>${campo==="filial"?"Filial":"Área"}</th><th>Resp.</th>${lin.some(x=>x.ad!=null)?"<th>Adesão</th>":""}<th>Confiança</th><th>eNPS</th>${DIMS.map(d=>`<th>${esc(d.nome.replace("Valores Braserv","Valores"))}</th>`).join("")}</tr>`
+   +lin.map(x=>`<tr class="un" data-c="${campo}" data-v="${esc(x.nm)}"><td>${esc(x.nm)}</td><td>${x.n}</td>${lin.some(y=>y.ad!=null)?`<td>${x.ad==null?"—":fmt(x.ad)+"%"}</td>`:""}<td class="h" style="background:${cor(x.conf)};color:${corTxt(x.conf)}">${fmt(x.conf)}%</td><td class="h">${x.enps>0?"+":""}${x.enps}</td>${x.ds.map(p=>`<td class="h" style="background:${cor(p)};color:${corTxt(p)}">${p==null?"—":fmt(p)+"%"}</td>`).join("")}</tr>`).join("")
+   +`</table></div>`;
+  h+=textoFiliais(base,lin.map(x=>x.nm),campo);
+  if(ocultas) h+=`<p class="foot">${ocultas} ${campo==="filial"?"filial(is)":"área(s)"} com menos de ${MIN_GRUPO} respostas não aparece(m) acima.</p>`;
+  return h+"</section>";
+}
+
+/* ===== Montagem ===== */
+function irTab(t){
+  tab=t;
+  document.querySelectorAll(".tabs button").forEach(b=>b.classList.toggle("on",b.dataset.t===t));
+  document.querySelectorAll(".tab").forEach(s=>s.classList.toggle("on",s.dataset.t===t));
+  window.scrollTo({top:0});
+}
+function render(){
+  const rs = filtrar();
+  const el = $("#conteudo");
+  const filtrando = Object.values(F).some(Boolean);
+  if(!rows.length){ el.innerHTML = `<div class="aviso">Ainda não há respostas registradas.</div>`; return; }
+  if(rs.length < MIN_GRUPO){
+    el.innerHTML = `<div class="aviso">Este recorte tem apenas ${rs.length} resposta${rs.length===1?"":"s"}. Para proteger o anonimato, resultados só aparecem para grupos com ${MIN_GRUPO} ou mais respostas. Escolha um recorte mais amplo.</div>`; return;
+  }
+  const n = enps(rs);
+  const idsG = idsDe(q=>GPTW.includes(q.dim)), vG = valores(rs, idsG);
+  const geral = rs.map(r=>r.geral);
+  const adesao = !filtrando ? `${fmt(rows.length/TOTAL_COLABORADORES*100)}% de ${TOTAL_COLABORADORES} colaboradores` : `de ${rows.length} no total`;
+  const vg = valores(rs, idsDe(q=>q.l==="g")), vd = valores(rs, idsDe(q=>q.l==="d"));
+  const stats = idsDe(()=>true).map(id=>({id, p:fav(valores(rs,[id]))})).filter(x=>x.p!=null).sort((a,b)=>b.p-a.p);
+  const dg=DIMS.filter(d=>GPTW.includes(d.nome)), dv=DIMS.filter(d=>!GPTW.includes(d.nome));
+  const favDim=(lista,base)=>lista.map(d=>fav(valores(base,idsDe(q=>q.dim===d.nome))));
+  const valSubs=(dv[0]?dv[0].subs:[]);
+  const favSub=(base)=>valSubs.map(s=>fav(valores(base,idsDe(q=>q.dim==="Valores Braserv"&&q.sub===s))));
+  const serieG=[{nome:filtrando?"Recorte selecionado":"Braserv",v:favDim(dg,rs),cor:HEX.navy}], serieV=[{nome:filtrando?"Recorte selecionado":"Braserv",v:favSub(rs),cor:HEX.orange}];
+  if(filtrando){ serieG.push({nome:"Braserv (todas)",v:favDim(dg,rows),cor:HEX.grey,base:true}); serieV.push({nome:"Braserv (todas)",v:favSub(rows),cor:HEX.grey,base:true}); }
+  const ad=rows.length/TOTAL_COLABORADORES*100;
+
+  const T={};
+  T.visao = leituraEstrategica(rs,n,vG,vg,vd) + `<div class="grid g4" style="margin-top:22px">
+    <div class="card kpi"><div class="rot">Respostas</div><div class="val">${rs.length}</div><small>${adesao}</small><p class="int">${intAdesao(rs.length,filtrando)}</p></div>
+    <div class="card kpi"><div class="rot">eNPS</div><div class="val">${n.score>0?"+":""}${n.score}</div><small>promotores − detratores</small><p class="int">${enpsLeitura(n)}</p></div>
+    <div class="card kpi"><div class="rot">Índice de confiança</div><div class="val">${fmt(fav(vG))}%</div><small>favorável nas 5 dimensões do GPTW</small><p class="int">${intConfianca(fav(vG))}</p></div>
+    <div class="card kpi"><div class="rot">Excelente lugar para trabalhar</div><div class="val">${fmt(fav(geral))}%</div><small>notas 5 e 6 · média ${fmt(med(geral),1)}</small><p class="int">${intGeral(fav(geral),fav(vG))}</p></div></div>
+  <section><div class="grid g2">
+    <div class="card"><span class="chip">Perfil do clima (5 dimensões)</span>${radar(dg.map(d=>d.nome),serieG)}</div>
+    <div class="grid" style="align-content:start">
+      <div class="card"><span class="chip">Recomendação (eNPS)</span><div class="nps"><div style="background:var(--orange);width:${n.d}%">${n.d>=6?fmt(n.d)+"%":""}</div><div style="background:var(--yellow);color:var(--navy);width:${n.neu}%">${n.neu>=6?fmt(n.neu)+"%":""}</div><div style="background:var(--navy);width:${n.p}%">${n.p>=6?fmt(n.p)+"%":""}</div></div>
+        <div class="leg"><span><i style="background:var(--orange)"></i>Detratores (0–6) ${fmt(n.d)}%</span><span><i style="background:var(--yellow)"></i>Neutros (7–8) ${fmt(n.neu)}%</span><span><i style="background:var(--navy)"></i>Promotores (9–10) ${fmt(n.p)}%</span></div></div>
+      <div class="card" style="display:flex;gap:18px;justify-content:space-around;flex-wrap:wrap">${donut(fav(vG),fmt(fav(vG))+"%","Confiança",corHex(fav(vG)))}${donut(fav(geral),fmt(fav(geral))+"%","Excelente lugar",corHex(fav(geral)))}${filtrando?"":donut(Math.min(100,ad),fmt(ad)+"%","Adesão",ad>=80?HEX.navy:ad>=60?HEX.yellow:HEX.orange)}</div>
+      ${linhaTempo(rs)?`<div class="card"><span class="chip">Respostas por dia</span><div style="margin-top:8px">${linhaTempo(rs)}</div></div>`:""}
+    </div></div></section>`;
+  T.dimensoes = `<section><h2>Dimensões do GPTW</h2><p class="sub">% de respostas favoráveis (notas 5 e 6) e média na escala de 1 a 6, com a leitura de cada dimensão.</p>
+    <div class="grid g2">${blocoDimensoes(rs, dg)}</div>
+    <div class="leg"><span><i style="background:var(--navy)"></i>${BANDAS.forte}% ou mais</span><span><i style="background:var(--yellow)"></i>${BANDAS.atencao}% a ${BANDAS.forte-1}%</span><span><i style="background:var(--orange)"></i>abaixo de ${BANDAS.atencao}%</span></div></section>
+    <section><h2>Distribuição das respostas</h2><p class="sub">Além do favorável, mostra quantos estão neutros ou desfavoráveis em cada dimensão.</p><div class="card">${distribBloco(rs,DIMS)}</div></section>`;
+  T.valores = `<section><h2>Valores Braserv</h2><p class="sub">Como Honestidade, Excelência Empresarial, Responsabilidade Sustentável e Compromisso com a Vida são percebidos no dia a dia.</p>
+    <div class="grid g2"><div class="grid" style="align-content:start">${blocoDimensoes(rs, dv)}</div><div class="card"><span class="chip">Perfil dos valores</span>${radar(valSubs,serieV)}</div></div></section>
+    <section><h2>O que sustenta cada valor</h2><p class="sub">As afirmações de cada valor, da mais para a menos favorável.</p><div class="grid g2">${valSubs.map(s=>{const l=stats.filter(x=>Q[x.id].dim==="Valores Braserv"&&Q[x.id].sub===s);return `<div class="card"><span class="chip">${esc(s)}</span>${itensLista(l,"auto")}</div>`;}).join("")}</div></section>`;
+  T.unidades = unidadesView();
+  T.lideranca = `<section><h2>Liderança</h2><p class="sub">Leitura separada entre o gestor direto e a direção.</p><div class="card">${barra("Gestor direto", fav(vg), med(vg))}${barra("Direção", fav(vd), med(vd))}${leituraLideranca(vg,vd)}</div></section>
+    <section><h2>Pontos fortes e oportunidades</h2><p class="sub">As afirmações mais e menos favoráveis, base para os OKRs.</p>
+    <div class="grid g2"><div class="card"><span class="chip" style="background:var(--navy)">Maiores forças</span>${itensLista(stats.slice(0,5),true)}</div>
+    <div class="card"><span class="chip" style="background:var(--orange);color:var(--navy)">Maiores oportunidades</span>${itensLista(stats.slice(-5).reverse(),false)}</div></div></section>`;
+  T.acoes = okrs(rs) + comoInterpretar();
+  T.comentarios = comentarios(rs);
+
+  el.innerHTML = `<nav class="tabs">${TABS.map(([k,t])=>`<button data-t="${k}">${t}</button>`).join("")}</nav>` +
+    TABS.map(([k])=>`<div class="tab" data-t="${k}">${T[k]}</div>`).join("") +
+    `<p class="foot">Base: ${rs.length} respostas${filtrando?" no recorte selecionado":""}. % favorável = notas 5 e 6 em escala de 1 a 6. eNPS = % promotores (9–10) menos % detratores (0–6).</p>`;
+  irTab(tab);
+}
+
+/* ===== Exportações ===== */
+function csvCel(v){ let s=String(v==null?"":v); if(/^[=+\-@]/.test(s)) s="'"+s; return /[",;\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s; }
+function baixar(nome, linhas){
+  const blob = new Blob(["﻿"+linhas.map(l=>l.map(csvCel).join(";")).join("\r\n")],{type:"text/csv;charset=utf-8"});
+  const a = document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=nome; document.body.appendChild(a); a.click(); a.remove();
+}
+function exportarResumo(){
+  const rs = filtrar(); if(rs.length<MIN_GRUPO) return;
+  const L = [["id","dimensao","subdimensao","lideranca","afirmacao","n","media","pct_favoravel"]];
+  idsDe(()=>true).forEach(id=>{ const v=valores(rs,[id]); L.push([id,Q[id].dim,Q[id].sub,Q[id].l==="g"?"gestor direto":Q[id].l==="d"?"direcao":"",Q[id].t,v.length,fmt(med(v)||0,2),fmt(fav(v)||0,1)]); });
+  baixar("clima_braserv_resumo.csv", L);
+}
+function exportarBruto(){
+  const rs = filtrar(); if(rs.length<MIN_GRUPO) return;
+  const ids = idsDe(()=>true);
+  const L = [["data","filial","area","tempo_empresa","funcao","enps","satisfacao_geral",...ids,"aberta_1","aberta_2","aberta_3"]];
+  rs.forEach(r=>{ const ab={}; (r.abertas||[]).forEach(a=>ab[a.n]=a.a);
+    L.push([r.criado_em,r.filial,r.area,r.tempo,r.funcao,r.enps,r.geral,...ids.map(id=>r.m[id]==null?"":r.m[id]),ab[1]||"",ab[2]||"",ab[3]||""]); });
+  baixar("clima_braserv_respostas.csv", L);
+}
+
+/* Exporta um resumo agregado em formato "longo" (uma linha por filial x dimensão x subdimensão),
+   pronto para colar numa planilha Excel/Lista do SharePoint que o Portal GH (Power Apps) lê. */
+function exportarPortal(){
+  if(!rows.length) return;
+  const L = [["ciclo","filial","dimensao","subdimensao","n_respondentes","media","pct_favoravel","enps_filial"]];
+  const grupos = [["Todas as filiais", rows]].concat(opcoes("filial").map(f=>[f, rows.filter(r=>r.filial===f)]));
+  grupos.forEach(([nome, g])=>{
+    if(g.length < MIN_GRUPO) return;
+    const e = enps(g);
+    DIMS.forEach(d=>{
+      const todos = valores(g, idsDe(q=>q.dim===d.nome));
+      L.push([CICLO, nome, d.nome, "Geral", g.length, fmt(med(todos),2), fmt(fav(todos),1), e.score]);
+      d.subs.forEach(s=>{ const v = valores(g, idsDe(q=>q.dim===d.nome&&q.sub===s));
+        L.push([CICLO, nome, d.nome, s, g.length, fmt(med(v),2), fmt(fav(v),1), e.score]); });
+    });
+  });
+  baixar("portal_gh_clima_resumo.csv", L);
+}
+if(new URLSearchParams(location.search).get("embed")==="1") document.body.classList.add("embed");
+
+/* ===== Eventos ===== */
+$("#b-portal").addEventListener("click", exportarPortal);
+$("#lform").addEventListener("submit", async e=>{
+  e.preventDefault(); const b=$("#lbtn"); b.disabled=true; $("#lmsg").textContent="";
+  try{
+    token = await entrar($("#em").value.trim(), $("#pw").value);
+    try{ sessionStorage.setItem("clima_tk", token); }catch(_){}
+    await abrir();
+  }catch(err){ $("#lmsg").textContent = err.message==="sessao"?"Sessão expirada.":err.message; }
+  b.disabled=false;
+});
+async function abrir(){
+  await carregar(); $("#login").hidden=true; $("#app").hidden=false;
+}
+["filial","area","tempo","funcao"].forEach(c=>$("#f-"+c).addEventListener("change",e=>{F[c]=e.target.value;render();}));
+$("#f-limpar").addEventListener("click",()=>{F={filial:"",area:"",tempo:"",funcao:""};montarFiltros();render();});
+$("#b-atual").addEventListener("click",()=>carregar().catch(sair));
+$("#b-resumo").addEventListener("click",exportarResumo);
+$("#b-bruto").addEventListener("click",exportarBruto);
+$("#b-print").addEventListener("click",()=>window.print());
+function apresentar(on){
+  document.body.classList.toggle("pres",on);
+  try{ if(on&&document.documentElement.requestFullscreen) document.documentElement.requestFullscreen(); else if(!on&&document.fullscreenElement) document.exitFullscreen(); }catch(_){}
+  window.scrollTo({top:0});
+}
+$("#b-apres").addEventListener("click",()=>apresentar(true));
+$("#sairpres").addEventListener("click",()=>apresentar(false));
+document.addEventListener("fullscreenchange",()=>{ if(!document.fullscreenElement) document.body.classList.remove("pres"); });
+document.addEventListener("keydown",e=>{
+  if(!document.body.classList.contains("pres")) return;
+  const i=TABS.findIndex(t=>t[0]===tab);
+  if(e.key==="ArrowRight"&&i<TABS.length-1) irTab(TABS[i+1][0]);
+  if(e.key==="ArrowLeft"&&i>0) irTab(TABS[i-1][0]);
+  if(e.key==="Escape") apresentar(false);
+});
+function sair(){ token=null; rows=[]; try{sessionStorage.removeItem("clima_tk");}catch(_){} $("#app").hidden=true; $("#login").hidden=false; $("#pw").value=""; }
+$("#b-sair").addEventListener("click",sair);
+document.addEventListener("click",e=>{
+  const tb=e.target.closest(".tabs button"); if(tb){ irTab(tb.dataset.t); return; }
+  const tg=e.target.closest(".tg"); if(tg){ verUn=tg.dataset.un; render(); return; }
+  const un=e.target.closest("tr.un"); if(un){ F[un.dataset.c]=un.dataset.v; montarFiltros(); tab="visao"; render(); return; }
+  const b=e.target.closest(".mais"); if(b){ verMais[b.dataset.n]=true; render(); } });
+(async()=>{ try{ const t=sessionStorage.getItem("clima_tk"); if(t){ token=t; await abrir(); } }catch(_){ sair(); } })();
+</script>
+</body>
+</html>
